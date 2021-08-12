@@ -84,14 +84,14 @@ class Parser:
 
         text = ""# f"<b>{obj_type}</b>\n"
         if title:
-            text += f"\n  <b>👨🏻‍🔧 Nome:</b> `{title}`"
+            text += f"\n  <b>👨🏻‍🔧 Nome:</b> <code>{title}</code>"
         if username:
             text += f"\n  <b>🌐 Username:</b> @{username}"
             text += f'  <b>\n  🆔 ID:</b> <a href="tg://resolve?domain={username}">{chat_id}</a>'
         else:
             text += f"\n  <b>🆔 ID:</b> <code>{chat_id}</code>"
         if participants:
-            text += f"\n  <b>🔗 Partecipanti:</b> `{participants}`"
+            text += f"\n  <b>🔗 Partecipanti:</b> <code>{participants}</code>"
         if bots:
             text += f"\n  <b>🤖 Bots:</b> <code>{bots}</code>"      
         if obj_type == "CHANNEL":
