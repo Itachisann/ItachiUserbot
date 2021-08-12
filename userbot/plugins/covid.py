@@ -6,7 +6,7 @@ from userbot.utils.events import NewMessage
 from googletrans import Translator
 
 plugin_category = "pandemic"
-covid_str = f"`Casi totali registrati:`  **%(confirmed)s**\n`Positivi attuali:`  **%(active)s**\n`Morti giornalieri':`  **%(new_deaths)s**\n`Nuovi casi:`  **%(new_cases)s**"
+covid_str = f"`Casi totali registrati:`  **%(confirmed)s**\n`Positivi attuali:`  **%(active)s**\n`Morti giornalieri:`  **%(new_deaths)s**\n`Nuovi casi:`  **%(new_cases)s**"
 
 @client.onMessage(
     command="`covid` `(Nazione)`",
