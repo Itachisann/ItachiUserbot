@@ -5,25 +5,26 @@ import time
 import dill
 import re
 from typing import Dict, List, Tuple
-
+import json
 from telethon.tl import functions, types
 
 from userbot import client
 from userbot.utils.helpers import get_chat_link
 from userbot.utils.events import NewMessage
 from telethon.events import StopPropagation
-import os
 import time
 from userbot.plugins import plugins_data
 from userbot.utils.helpers import _humanfriendly_seconds, get_chat_link
 
-plugin_category = "pmpermit"
+plugin_category = "status"
 PM_PERMIT = client.config['userbot'].getboolean('pm_permit', True)
-redis = client.database
 
-approvedUsers: List[int] = []
-approvedUsername: List[int] = []
-spammers: Dict[int, tuple] = {}
+if not os.path.exists('database.json'):
+    with open('database.json', 'w') as f:
+        data = {}
+        data['approved_users'] = []
+        data['approved_username'] = []
+        f.write(json.dumps(data))
 
 DEFAULT_UNMUTE_SETTINGS = types.InputPeerNotifySettings(
     show_previews=True,
@@ -33,6 +34,8 @@ DEFAULT_MUTE_SETTINGS = types.InputPeerNotifySettings(
     silent=True,
     mute_until=datetime.timedelta(days=365)
 )
+
+
 AFK = plugins_data.AFK
 AFK.privates = plugins_data.load_data('userbot_afk_privates')
 AFK.groups = plugins_data.load_data('userbot_afk_groups')
@@ -45,11 +48,6 @@ currently_afk_reason = (
     "🤍 **Al momento non sono disponibile, ti risponderò il prima possibile.\n\nMotivo: ** `{reason}`"
 )
 
-if redis:
-    if redis.exists('approved:users'):
-        approvedUsers = dill.loads(redis.get('approved:users'))
-        approvedUsername = dill.loads(redis.get('approved:users'))
-
 @client.onMessage(
     command=("`approve` `(Utente) - Permetti di farti scrivere quando sei AFK`", plugin_category),
     outgoing=True, regex=r"approve(?: |$)(.+)?$"
@@ -58,27 +56,27 @@ async def approve(event: NewMessage.Event) -> None:
     users = await get_users(event)
     approved = []
     skipped = []
+    with open('database.json') as json_file:
+        data_read = json.load(json_file)
     if users:
         for user in users:
             href = await get_chat_link(user)
             if user.verified or user.support or user.bot:
                 skipped.append(href)
                 continue
-
-            if user.id in approvedUsers:
+            if user.id in data_read['approved_users']:
                 skipped.append(href)
             else:
-                approvedUsers.append(user.id)
-                approvedUsername.append('@'+user.username)
-                await update_db()
+                with open('database.json', 'w') as f:
+                    approvedUsers  = data_read['approved_users']
+                    approvedUsername = data_read['approved_username']
+                    approvedUsers.append(user.id)
+                    approvedUsername.append('@'+user.username)
+                    data = {}
+                    data['approved_users'] = approvedUsers
+                    data['approved_username'] = approvedUsername
+                    f.write(json.dumps(data))
                 approved.append(href)
-                await client(functions.account.UpdateNotifySettingsRequest(
-                    peer=user.id,
-                    settings=DEFAULT_UNMUTE_SETTINGS
-                ))
-            if user.id in spammers:
-                _, _, sent, _ = spammers.pop(user.id)  # Reset the counter
-                await client.delete_messages(user, sent)
                 await client(functions.account.UpdateNotifySettingsRequest(
                     peer=user.id,
                     settings=DEFAULT_UNMUTE_SETTINGS
@@ -99,13 +97,21 @@ async def disapprove(event: NewMessage.Event) -> None:
     users = await get_users(event)
     disapproved = []
     skipped = []
+    with open('database.json') as json_file:
+        data_read = json.load(json_file)
     if users:
         for user in users:
             href = await get_chat_link(user)
-            if user.id in approvedUsers:
-                approvedUsers.remove(user.id)
-                approvedUsername.remove('@'+user.username)
-                await update_db()
+            if user.id in data_read['approved_users']:
+                with open('database.json', 'w') as f:
+                    approvedUsers  = data_read['approved_users']
+                    approvedUsername = data_read['approved_username']
+                    approvedUsers.remove(user.id)
+                    approvedUsername.remove('@'+user.username)
+                    data = {}
+                    data['approved_users'] = approvedUsers
+                    data['approved_username'] = approvedUsername
+                    f.write(json.dumps(data))
                 disapproved.append(href)
                 await client(functions.account.UpdateNotifySettingsRequest(
                     peer=user.id,
@@ -113,7 +119,6 @@ async def disapprove(event: NewMessage.Event) -> None:
                 ))
             else:
                 skipped.append(href)
-            spammers.pop(user.id, None)  # Reset the counter
     if disapproved:
         text = '❌ '+', '.join(disapproved) + " __disapprovato con successo__ "
         await event.answer(text, log=('pmpermit', text))
@@ -127,10 +132,11 @@ async def disapprove(event: NewMessage.Event) -> None:
     outgoing=True, regex=r"approved$"
 )
 async def approved(event: NewMessage.Event) -> None:
-
-    if approvedUsername:
+    with open('database.json') as json_file:
+        data_read = json.load(json_file)
+    if data_read['approved_username']:
         text = "**Utenti approvati:**\n"
-        text += ' - '.join([f'{i}' for i in approvedUsername])
+        text += ' - '.join([f'{i}' for i in data_read['approved_username']])
         await event.answer(text)
     else:
         await event.answer("`Ancora nessuno approvato..`")
@@ -154,15 +160,6 @@ async def get_users(event: NewMessage.Event) -> types.User or None:
         reply = await event.get_reply_message()
         users = [await reply.get_sender()]
     return users
-
-
-async def update_db() -> None:
-    if redis:
-        if approvedUsers:
-            redis.set('approved:users', dill.dumps(approvedUsers))
-        else:
-            redis.delete('approved:users')
-            
 
 
 @client.onMessage(
@@ -264,7 +261,8 @@ async def awayfromkeyboard(event: NewMessage.Event) -> None:
 
 @client.onMessage(incoming=True, edited=False)
 async def inc_listner(event: NewMessage.Event) -> None:
-    """Handle tags and new messages by listening to new incoming messages."""
+    with open('database.json') as json_file:
+        data_read = json.load(json_file)
     sender = await event.get_sender()
     if event.from_scheduled or (isinstance(sender, types.User) and sender.bot):
         return
@@ -290,7 +288,7 @@ async def inc_listner(event: NewMessage.Event) -> None:
     if chat.id in AFK.sent:
         if round((now - AFK.sent[chat.id][-1][1]).total_seconds()) <= 150:
             return
-    if chat.id not in approvedUsers:
+    if chat.id not in data_read['approved_users']:
         if reason:
             result = await event.resanswer(
                 currently_afk_reason, plugin='afk', name='currently_afk_reason',
@@ -305,6 +303,8 @@ async def inc_listner(event: NewMessage.Event) -> None:
 
 
 async def _append_msg(variable: dict, chat: int, event: int) -> None:
+    with open('database.json') as json_file:
+        data_read = json.load(json_file)
     if chat in variable:
         variable[chat]['mentions'].append(event)
     else:
@@ -312,7 +312,7 @@ async def _append_msg(variable: dict, chat: int, event: int) -> None:
             peer=chat
         ))
         notif = types.InputPeerNotifySettings(**vars(notif))
-        if chat not in approvedUsers:
+        if chat not in data_read['approved_users']:
             await _update_notif_settings(chat)
         async for dialog in client.iter_dialogs():
             if chat == dialog.entity.id:
