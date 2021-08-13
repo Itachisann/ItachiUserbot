@@ -61,32 +61,34 @@ async def approve(event: NewMessage.Event) -> None:
     if users:
         for user in users:
             href = await get_chat_link(user)
-            if user.verified or user.support or user.bot:
-                skipped.append(href)
-                continue
-            if user.id in data_read['approved_users']:
-                skipped.append(href)
-            else:
-                with open('database.json', 'w') as f:
-                    approvedUsers  = data_read['approved_users']
-                    approvedUsername = data_read['approved_username']
-                    approvedUsers.append(user.id)
-                    approvedUsername.append('@'+user.username)
-                    data = {}
-                    data['approved_users'] = approvedUsers
-                    data['approved_username'] = approvedUsername
-                    f.write(json.dumps(data))
-                approved.append(href)
-                await client(functions.account.UpdateNotifySettingsRequest(
-                    peer=user.id,
-                    settings=DEFAULT_UNMUTE_SETTINGS
-                ))
+            if 'yourself' not in href:
+                if user.verified or user.support or user.bot:
+                    skipped.append(href)
+                    continue
+                if user.id in data_read['approved_users']:
+                    skipped.append(href)
+                else:
+                    with open('database.json', 'w') as f:
+                        approvedUsers  = data_read['approved_users']
+                        approvedUsername = data_read['approved_username']
+                        approvedUsers.append(user.id)
+                        approvedUsername.append('@'+user.username)
+                        data = {}
+                        data['approved_users'] = approvedUsers
+                        data['approved_username'] = approvedUsername
+                        f.write(json.dumps(data))
+                    approved.append(href)
+                    if "userbot_afk" in os.environ:
+                        await client(functions.account.UpdateNotifySettingsRequest(
+                            peer=user.id,
+                            settings=DEFAULT_UNMUTE_SETTINGS
+                        ))
     if approved:
         text = '✅ '+', '.join(approved) + " __approvato con successo__ "
         await event.answer(text, log=('pmpermit', text))
     if skipped:
-        text = ', '.join(skipped) + " ** è già approvato.** "
-        await event.answer(text, reply=True)
+        text = ', '.join(skipped) + " **  approvato.** "
+        await event.answer(text)
 
 
 @client.onMessage(
@@ -102,29 +104,31 @@ async def disapprove(event: NewMessage.Event) -> None:
     if users:
         for user in users:
             href = await get_chat_link(user)
-            if user.id in data_read['approved_users']:
-                with open('database.json', 'w') as f:
-                    approvedUsers  = data_read['approved_users']
-                    approvedUsername = data_read['approved_username']
-                    approvedUsers.remove(user.id)
-                    approvedUsername.remove('@'+user.username)
-                    data = {}
-                    data['approved_users'] = approvedUsers
-                    data['approved_username'] = approvedUsername
-                    f.write(json.dumps(data))
-                disapproved.append(href)
-                await client(functions.account.UpdateNotifySettingsRequest(
-                    peer=user.id,
-                    settings=DEFAULT_MUTE_SETTINGS
-                ))
-            else:
-                skipped.append(href)
+            if 'yourself' not in href:
+                if user.id in data_read['approved_users']:
+                    with open('database.json', 'w') as f:
+                        approvedUsers  = data_read['approved_users']
+                        approvedUsername = data_read['approved_username']
+                        approvedUsers.remove(user.id)
+                        approvedUsername.remove('@'+user.username)
+                        data = {}
+                        data['approved_users'] = approvedUsers
+                        data['approved_username'] = approvedUsername
+                        f.write(json.dumps(data))
+                    disapproved.append(href)
+                    if "userbot_afk" in os.environ:
+                        await client(functions.account.UpdateNotifySettingsRequest(
+                            peer=user.id,
+                            settings=DEFAULT_MUTE_SETTINGS
+                        ))
+                else:
+                    skipped.append(href)
     if disapproved:
         text = '❌ '+', '.join(disapproved) + " __disapprovato con successo__ "
         await event.answer(text, log=('pmpermit', text))
     if skipped:
-        text = ', '.join(skipped) + "** già non approvato!** "
-        await event.answer(text, reply=True)
+        text = ', '.join(skipped) + "** non è approvato!** "
+        await event.answer(text)
 
 
 @client.onMessage(
