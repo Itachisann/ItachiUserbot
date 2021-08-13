@@ -10,7 +10,6 @@ import sys
 import redis
 from telethon.tl import types
 
-from sessions.redis import RedisSession
 from .utils.config_helper import resolve_env
 from .utils.client import UserBotClient
 from .utils.log_formatter import CustomFormatter, CustomMemoryHandler
