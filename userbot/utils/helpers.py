@@ -30,7 +30,6 @@ def printUser(entity: types.User) -> None:
 
 
 def printVersion(version: int, prefix: str) -> None:
-    """Print the version of the bot with the default prefix"""
     if not prefix:
         prefix = '.'
     LOGGER.warning(
@@ -41,12 +40,7 @@ def printVersion(version: int, prefix: str) -> None:
 
 
 async def isRestart(client: UserBotClient) -> None:
-    """Check if the script restarted itself and edit the last message"""
     userbot_restarted = os.environ.get('userbot_restarted', False)
-    heroku = client.config['api_keys'].get('api_key_heroku', False)
-    updated = os.environ.pop('userbot_update', False)
-    disabled_commands = False
-
     async def success_edit(text):
         entity = int(userbot_restarted.split('/')[0])
         message = int(userbot_restarted.split('/')[1])
