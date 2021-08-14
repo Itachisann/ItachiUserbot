@@ -21,17 +21,21 @@ plugin_category = "utils"
 async def spam(event: NewMessage.Event) -> None:
     arg = event.matches[0].group(1)
     arg_ = arg.split(" ")
-    if arg_[0]:
+    if arg:
         try:
             value = int(arg_[0])
         except ValueError:
             await event.edit('__Devi inserire un numero di messaggi valido!__')
         if type(value) == int:
-            await event.delete()
-            if arg_[1]:
+            if len(arg_[0]) > 1:
                 for i in range(0, value, 1):
-                    text = arg.replace(arg_[0], "")
+                    text = arg.partition(arg_[0])[2]
                     await event.respond(text)
+            else:
+                await event.edit("**❗️ Devi inserire il messaggio!**")              
+    else:
+        await event.edit('**❗️ Utilizzo corretto:** `.spam [Numero messaggi] [Messaggio]`')                        
+                    
                     
 
 
@@ -162,20 +166,24 @@ async def tspam(event: NewMessage.Event) -> None:
     await event.delete()
     
 @client.onMessage(
-    command=("`timer` - `[Tempo in minuti][Messaggio]`", plugin_category),
+    command=("`timer` - `[Tempo in minuti] [Messaggio]`", plugin_category),
     outgoing=True, regex=r"timer(?: |$|\n)([\s\S]*)"
 )
 async def timer(event: NewMessage.Event) -> None:
     message = event.matches[0].group(1)
     text = message.split(" ")
-    if text[0]:
+    if message:
         try:
             value = int(text[0])
         except ValueError:
             await event.edit('__Devi inserire un tempo in minuti valido!__')
         if type(value) == int:
-            if text[1]:
+            if len(text[0]) > 1:
                 await event.delete()
                 await asyncio.sleep(value * 60)
-                arg = message.replace(text[0], "")
+                arg = message.partition(text[0])[2]
                 await event.respond(arg)
+            else:
+                await event.edit("**❗️ Devi inserire il messaggio!**")                
+    else:
+        await event.edit('**❗️ Utilizzo corretto:** `.timer [Tempo in minuti] [Messaggio]`')    
