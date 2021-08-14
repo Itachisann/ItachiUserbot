@@ -1,19 +1,3 @@
-# TG-UserBot - A modular Telegram UserBot script for Python.
-# Copyright (C) 2019  Kandarp <https://github.com/kandnub>
-#
-# TG-UserBot is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# TG-UserBot is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with TG-UserBot.  If not, see <https://www.gnu.org/licenses/>.
-
 
 import aiohttp
 import asyncio
@@ -48,15 +32,9 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36"""
 
 
 @client.onMessage(
-    command="`search` `(Trova la corrispondenza rispondendo ad un media.)`", outgoing=True, regex=r"search(?: |$)(\d*)"
+    command="<code>search</code>", outgoing=True, regex=r"search(?: |$)(\d*)"
 )
 async def search(event: NewMessage.Event) -> None:
-    """
-    Reverse search supported media types on Google images.
-
-
-    `{prefix}reverse` in reply to a media or **{prefix}reverse (images)**
-    """
     reply = await event.get_reply_message()
     if reply and reply.media:
         ffmpeg = await is_ffmpeg_there()
@@ -172,8 +150,6 @@ def _post(name: str, media: io.BytesIO):
 
 
 async def _scrape_url(googleurl):
-    """Parse/Scrape the HTML code for the info we want."""
-
     UA = random.choice([heavy_ua1, heavy_ua2])
     opener.addheaders = [('User-Agent', UA)]
 
@@ -228,7 +204,6 @@ async def _scrape_url(googleurl):
 
 
 async def _get_similar_links(link: str, lim: int = 2):
-    """Parse/Scrape the HTML code for the info we want."""
 
     opener.addheaders = [('User-Agent', light_useragent)]
 

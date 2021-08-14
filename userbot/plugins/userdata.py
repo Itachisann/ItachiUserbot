@@ -15,13 +15,12 @@ plugin_category = "user"
 
 
 @client.onMessage(
-    command=("`info` `(Utente o ID)`", plugin_category),
+    command=("info [Utente]", plugin_category),
     outgoing=True, regex=r"info(?: |$|\n)([\s\S]*)"
 )
 async def info(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     entities = []
-
     if match:
         entities, _ = await client.parse_arguments(match)
         if "this" in entities:
@@ -37,7 +36,6 @@ async def info(event: NewMessage.Event) -> None:
             entities.append(user)
     else:
         entities.append("self")
-
     users = ""
     chats = ""
     channels = ""
@@ -88,7 +86,7 @@ async def info(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("`bio` `(Nuova bio)`", plugin_category),
+    command=("bio [Bio]", plugin_category),
     outgoing=True, regex="bio(?: |$)(.*)$"
 )
 async def bio(event: NewMessage.Event) -> None:
@@ -112,7 +110,7 @@ async def bio(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("`username` `(Nuovo Username)`", plugin_category),
+    command=("username [Username]", plugin_category),
     outgoing=True, regex="username(?: |$)(.*)$"
 )
 async def username(event: NewMessage.Event) -> None:
@@ -140,7 +138,7 @@ async def username(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("`on`", plugin_category),
+    command=("on", plugin_category),
     outgoing=True, regex="on(?: |$)(.*)$"
 )
 async def on(event: NewMessage.Event) -> None:
@@ -168,7 +166,7 @@ async def on(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("`off`", plugin_category),
+    command=("off", plugin_category),
     outgoing=True, regex="off(?: |$)(.*)$"
 )
 async def off(event: NewMessage.Event) -> None:
@@ -189,7 +187,7 @@ async def off(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("`pfp` `(Rispondi ad una foto)`", plugin_category),
+    command=("pfp", plugin_category),
     outgoing=True, regex="pfp$"
 )
 async def pfp(event: NewMessage.Event) -> None:
@@ -257,7 +255,7 @@ async def pfp(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("`id` `[Utente]`", plugin_category),
+    command=("id [Utente]", plugin_category),
     outgoing=True, regex=r"id(?: |$|\n)([\s\S]*)"
 )
 async def whichid(event: NewMessage.Event) -> None:

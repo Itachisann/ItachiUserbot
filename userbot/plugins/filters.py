@@ -1,19 +1,12 @@
 import datetime
 import os
 import time
-import dill
 import re
 from typing import Dict, List, Tuple
 import json
-from telethon.tl import functions, types
 
 from userbot import client
-from userbot.utils.helpers import get_chat_link
 from userbot.utils.events import NewMessage
-from telethon.events import StopPropagation
-import time
-from userbot.plugins import plugins_data
-from userbot.utils.helpers import _humanfriendly_seconds, get_chat_link
 
 plugin_category = 'filter'
 if not os.path.exists('filters.json'):
@@ -22,7 +15,7 @@ if not os.path.exists('filters.json'):
         f.write(json.dumps(data))
         
 @client.onMessage(
-    command=("`addfilter` `[Filtro] [Testo]` - `Aggiunti un filtro`", plugin_category),
+    command=("<code>addfilter</code> <code>[Filtro] [Testo]</code>", plugin_category),
     outgoing=True, regex=r"addfilter(?: |$)(.+)?$"
 )       
 async def addfilter(event: NewMessage.Event) -> None: 
@@ -51,7 +44,7 @@ async def addfilter(event: NewMessage.Event) -> None:
            
            
 @client.onMessage(
-    command=("`delfilter` `[Filtro]` - `Rimuovi un filtro`", plugin_category),
+    command=("<code>delfilter</code> <code>[Filtro]</code>", plugin_category),
     outgoing=True, regex=r"(?:delfilter|unfilter)(?: |$)(.+)?$"
 )       
 async def delfilter(event: NewMessage.Event) -> None: 
@@ -84,7 +77,7 @@ async def listner(event: NewMessage.Event) -> None:
         await event.respond(data_read[arg[0]]) 
     
 @client.onMessage(
-    command=("`filterlist` - `Vedi la lista dei filtri`", plugin_category),
+    command=("<code>filterlist</code>", plugin_category),
     outgoing=True, regex=r"(?:filterlist|filters)(?: |$)(.+)?$"
 )       
 async def filterlist(event: NewMessage.Event) -> None: 

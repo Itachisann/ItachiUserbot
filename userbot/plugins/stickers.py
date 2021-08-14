@@ -36,7 +36,7 @@ or use {}stickerpack reset for deafult packs.`"""
 
 
 @client.onMessage(
-    command=("`getpic` - `Rispondi ad uno sticker per convertirlo in immagine`", plugin_category),
+    command=("<code>getpic</code>", plugin_category),
     outgoing=True, regex="getpic(?: |$)(file|document)?$"
 )
 async def getsticker(event: NewMessage.Event) -> None:
@@ -77,7 +77,7 @@ async def getsticker(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("`pack` - `Ottieni i tuoi pacchetti sticker`", plugin_category),
+    command=("<code>pack</code>", plugin_category),
     outgoing=True, regex=r"pack(?: |$)(.*)"
 )
 async def stickerpack(event: NewMessage.Event) -> None:
@@ -89,7 +89,7 @@ async def stickerpack(event: NewMessage.Event) -> None:
     return
 
 @client.onMessage(
-    command=("`addsticker` - `Rispondi ad uno sticker per aggiungerlo al tuo pack`", plugin_category),
+    command=("addsticker", plugin_category),
     outgoing=True, regex=r"addsticker(?: |$)(.*)"
 )
 async def addsticker(event: NewMessage.Event) -> None:

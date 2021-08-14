@@ -36,5 +36,3 @@ def dump_AFK() -> None:
         os.environ['userbot_afk_groups'] = cls_dict['groups']
     if "sent" in cls_dict:
         os.environ['userbot_afk_sent'] = cls_dict['sent']
-
-

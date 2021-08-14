@@ -14,7 +14,7 @@ from userbot.utils.events import NewMessage
 plugin_category = "utils"
 
 @client.onMessage(
-    command=("`spam` `[Numero messaggi] [Messaggio]`", plugin_category),
+    command=("spam [Numero messaggi] [Messaggio]", plugin_category),
     outgoing=True, regex=r"spam(?: |$|\n)([\s\S]*)"
 )
 
@@ -40,7 +40,7 @@ async def spam(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("`type` `[Messaggio]`", plugin_category),
+    command=("type [Messaggio]", plugin_category),
     outgoing=True, regex=r"type(?: |$|\n)([\s\S]*)"
 )
 async def typechar(event: NewMessage.Event) -> None:
@@ -73,7 +73,7 @@ async def typechar(event: NewMessage.Event) -> None:
 
     
 @client.onMessage(
-    command=("`hack` - `Hack`", plugin_category),
+    command=("hack", plugin_category),
     outgoing=True, regex=r"hack(?: |$|\n)([\s\S]*)"
 )
 async def hack(event: NewMessage.Event) -> None:
@@ -98,7 +98,7 @@ async def hack(event: NewMessage.Event) -> None:
         await event.edit(animation_chars[i % 10])
         
 @client.onMessage(
-    command=("`tr` `[Messaggio]`", plugin_category),
+    command=("tr [Messaggio]", plugin_category),
     outgoing=True, regex=r"tr(?: |$|\n)([\s\S]*)"
 )
 async def translate(event: NewMessage.Event) -> None:
@@ -124,7 +124,7 @@ async def translate(event: NewMessage.Event) -> None:
             await event.edit(f"`Questo testo è già in italiano..`")
             
 @client.onMessage(
-    command=("`ph`", plugin_category),
+    command=("ph", plugin_category),
     outgoing=True, regex=r"ph(?: |$|\n)([\s\S]*)"
 )
 async def ph(event: NewMessage.Event) -> None:
@@ -155,7 +155,7 @@ async def ph(event: NewMessage.Event) -> None:
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n")
     
 @client.onMessage(
-    command=("`tspam` - `[Messaggio]`", plugin_category),
+    command=("tspam [Messaggio]", plugin_category),
     outgoing=True, regex=r"tspam(?: |$|\n)([\s\S]*)"
 )
 async def tspam(event: NewMessage.Event) -> None:
@@ -166,7 +166,7 @@ async def tspam(event: NewMessage.Event) -> None:
     await event.delete()
     
 @client.onMessage(
-    command=("`timer` - `[Tempo in minuti] [Messaggio]`", plugin_category),
+    command=("timer [Tempo in minuti] [Messaggio]", plugin_category),
     outgoing=True, regex=r"timer(?: |$|\n)([\s\S]*)"
 )
 async def timer(event: NewMessage.Event) -> None:
