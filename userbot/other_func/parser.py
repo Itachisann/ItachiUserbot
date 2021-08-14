@@ -1,4 +1,3 @@
-
 import re
 from typing import Union
 
@@ -9,14 +8,12 @@ from ..utils.events import NewMessage
 
 
 class Parser:
-    """Parse UserFull, ChannelFull and ChatFull objects."""
 
     @staticmethod
     async def parse_full_user(
         usr_obj: types.UserFull,
         event: NewMessage.Event
     ) -> str:
-        """Human-friendly string of an User obj's attributes"""
         user = usr_obj.user
 
         user_id = get_peer_id(user.id)
@@ -84,14 +81,14 @@ class Parser:
 
         text = ""# f"<b>{obj_type}</b>\n"
         if title:
-            text += f"\n  <b>👨🏻‍🔧 Nome:</b> <code>{title}</code>"
+            text += f"\n  <b>👨🏻‍🔧 Nome:</b> `{title}`"
         if username:
             text += f"\n  <b>🌐 Username:</b> @{username}"
             text += f'  <b>\n  🆔 ID:</b> <a href="tg://resolve?domain={username}">{chat_id}</a>'
         else:
             text += f"\n  <b>🆔 ID:</b> <code>{chat_id}</code>"
         if participants:
-            text += f"\n  <b>🔗 Partecipanti:</b> <code>{participants}</code>"
+            text += f"\n  <b>🔗 Partecipanti:</b> `{participants}`"
         if bots:
             text += f"\n  <b>🤖 Bots:</b> <code>{bots}</code>"      
         if obj_type == "CHANNEL":

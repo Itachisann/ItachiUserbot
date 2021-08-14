@@ -12,7 +12,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 async def get_user_from_msg(event: NewMessage.Event) -> Union[int, str, None]:
-    """Get a user's ID or username from the event's regex pattern match"""
     user = None
     match = event.matches[0].group(1)
 
@@ -41,12 +40,10 @@ async def get_user_from_msg(event: NewMessage.Event) -> Union[int, str, None]:
 async def get_entity_from_msg(event: NewMessage.Event) -> Tuple[
     Union[None, types.User], Union[None, bool, str], Union[None, bool, str]
 ]:
-    """Get a User entity and/or a reason from the event's regex pattern"""
     exception = False
     entity = None
     match = event.matches[0].group(1)
 
-    # TODO: Find better logic to differentiate user and reason
     pattern = re.compile(r"(@?\w+|\d+)(?: |$)(.*)")
     user = pattern.match(match).group(1) if match else None
     extra = pattern.match(match).group(2) if match else None
