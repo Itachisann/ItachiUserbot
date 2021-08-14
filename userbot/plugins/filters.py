@@ -17,7 +17,7 @@ from userbot.utils.helpers import _humanfriendly_seconds, get_chat_link
 
 plugin_category = 'filter'
 if not os.path.exists('filters.json'):
-    with open('filters.json', 'w') as f:
+    with open('filters.json', 'w', encoding="utf8") as f:
         data = {}
         f.write(json.dumps(data))
         
@@ -29,7 +29,7 @@ async def addfilter(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     if match:
         arg = match.split(" ")
-        with open('filters.json') as json_file:
+        with open('filters.json', encoding="utf8") as json_file:
             data_read = json.load(json_file)
         if len(arg[0]) > 1:
             if len(arg[1]) > 1:
@@ -37,10 +37,10 @@ async def addfilter(event: NewMessage.Event) -> None:
                 if command not in data_read:
                     filter_text = match.partition(arg[0])[2]
                     filter_text = filter_text.partition(" ")[2]
-                    with open('filters.json', 'w') as f:
+                    with open('filters.json', 'w', encoding='utf8') as f:
                         data = data_read
                         data[command] = filter_text
-                        f.write(json.dumps(data))
+                        f.write(json.dumps(data, ensure_ascii=False))
                         await event.edit(f"✅ **Filtro `{command}` aggiunto ✅**")
                 else:
                     await event.edit(f"**❌ Il filtro `{command}` è già impostato!**")                    
@@ -52,13 +52,13 @@ async def addfilter(event: NewMessage.Event) -> None:
            
 @client.onMessage(
     command=("`delfilter` `[Filtro]` - `Rimuovi un filtro`", plugin_category),
-    outgoing=True, regex=r"(?:delfilter|removefilter)(?: |$)(.+)?$"
+    outgoing=True, regex=r"(?:delfilter|unfilter)(?: |$)(.+)?$"
 )       
 async def delfilter(event: NewMessage.Event) -> None: 
     match = event.matches[0].group(1)
     arg = match.split(" ")
     if match:
-        with open('filters.json') as json_file:
+        with open('filters.json', encoding="utf8") as json_file:
             data_read = json.load(json_file)
         command = arg[0]
         if command in data_read:
@@ -75,7 +75,7 @@ async def delfilter(event: NewMessage.Event) -> None:
            
 @client.onMessage(outgoing=True, edited=False)
 async def listner(event: NewMessage.Event) -> None: 
-    with open('filters.json') as json_file:
+    with open('filters.json', encoding="utf8") as json_file:
         data_read = json.load(json_file)
     text = event.message.text
     arg = text.split(" ")
