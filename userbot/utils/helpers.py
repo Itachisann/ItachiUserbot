@@ -9,8 +9,6 @@ import sys
 import time
 from typing import Tuple, Union
 
-from heroku3 import from_key
-
 from telethon import errors
 from telethon.tl import types
 from telethon.utils import get_display_name
@@ -33,8 +31,7 @@ def printVersion(version: int, prefix: str) -> None:
     if not prefix:
         prefix = '.'
     LOGGER.warning(
-        "UserBot {0} collegato. Prova a digitare {1}ping per verificare"
-        "in qualche chat.".format(version, prefix)
+        "UserBot {0} collegato. Prova a digitare {1}ping per verificare".format(version, prefix)
     )
     print()
 
@@ -64,7 +61,6 @@ def restarter(client: UserBotClient) -> None:
     if os.environ.get('userbot_afk', False):
         plugins_data.dump_AFK()
     client._kill_running_processes()
-
     if sys.platform.startswith('win'):
         os.spawnle(os.P_NOWAIT, executable, *args, os.environ)
     else:
@@ -147,17 +143,6 @@ async def get_chat_link(
     return extra
 
 
-async def disable_commands(client: UserBotClient, commands: str) -> None:
-    commands = commands.split(", ")
-    for command in commands:
-        target = client.commands.get(command, False)
-        if target:
-            client.remove_event_handler(target.func)
-            client.disabled_commands.update({command: target})
-            del client.commands[command]
-            LOGGER.debug("Disabled command: %s", command)
-
-
 async def is_ffmpeg_there():
     cmd = await asyncio.create_subprocess_shell(
         'ffmpeg -version',
@@ -180,7 +165,6 @@ async def format_speed(speed_per_second, unit):
 
 
 class ProgressCallback():
-    """Custom class to handle upload and download progress."""
     def __init__(self, event, start=None, filen='unamed', update=5):
         self.event = event
         self.start = start or time.time()
