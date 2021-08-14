@@ -84,7 +84,7 @@ async def listner(event: NewMessage.Event) -> None:
         await event.respond(data_read[arg[0]]) 
     
 @client.onMessage(
-    command=("`filterlist` `Permette di vedere la lista filtri`", plugin_category),
+    command=("`filterlist` - `Vedi la lista dei filtri`", plugin_category),
     outgoing=True, regex=r"(?:filterlist|filters)(?: |$)(.+)?$"
 )       
 async def filterlist(event: NewMessage.Event) -> None: 
