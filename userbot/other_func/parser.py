@@ -81,14 +81,14 @@ class Parser:
 
         text = ""# f"<b>{obj_type}</b>\n"
         if title:
-            text += f"\n  <b>👨🏻‍🔧 Nome:</b> `{title}`"
+            text += f"\n  <b>👨🏻‍🔧 Nome:</b> <code>{title}</code>"
         if username:
             text += f"\n  <b>🌐 Username:</b> @{username}"
             text += f'  <b>\n  🆔 ID:</b> <a href="tg://resolve?domain={username}">{chat_id}</a>'
         else:
             text += f"\n  <b>🆔 ID:</b> <code>{chat_id}</code>"
         if participants:
-            text += f"\n  <b>🔗 Partecipanti:</b> `{participants}`"
+            text += f"\n  <b>🔗 Partecipanti:</b> <code>{participants}</code>"
         if bots:
             text += f"\n  <b>🤖 Bots:</b> <code>{bots}</code>"      
         if obj_type == "CHANNEL":
@@ -96,5 +96,5 @@ class Parser:
                 text += f"\n  <b>📯 Online:</b> <code>{online}</code>"
         if about:
             about = re.sub(r'(@\w{5,32})', r'`\1`', about, count=0)
-            text += re.sub(r'`{2}', r'', f"\n  <b>📕 Bio:\n</b> <code>{about}</code>")                
+            text += re.sub(r'`{2}', r'', f"\n  <b>📕 Bio:\n</b><code>{about}</code>")                
         return text
