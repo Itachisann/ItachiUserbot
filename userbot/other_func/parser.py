@@ -52,7 +52,7 @@ class Parser:
         if dc_id:
             text += f"\n  <b>🔗 DC:</b> <code>{dc_id}</code>"
         if about:
-            about = re.sub(r'(@\w{5,32})', r'`\1`', about, count=0)
+            about = re.sub(r'(@\w{5,32})', r'</code>\1<code>', about, count=0)
             text += re.sub(r'`{2}', r'', f"\n  <b>📕 Bio:\n </b> <code>{about}</code>")
         return text
 
@@ -95,6 +95,6 @@ class Parser:
             if online:
                 text += f"\n  <b>📯 Online:</b> <code>{online}</code>"
         if about:
-            about = re.sub(r'(@\w{5,32})', r'`\1`', about, count=0)
+            about = re.sub(r'(@\w{5,32})', r'</code>\1<code>', about, count=0)
             text += re.sub(r'`{2}', r'', f"\n  <b>📕 Bio:\n</b><code>{about}</code>")                
         return text
