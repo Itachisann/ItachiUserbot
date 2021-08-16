@@ -44,7 +44,7 @@ async def approve(event: NewMessage.Event) -> None:
     users = await get_users(event)
     approved = []
     skipped = []
-    with open('Database/database.json') as json_file:
+    with open('userbot/databasedatabase.json') as json_file:
         data_read = json.load(json_file)
     if users:
         for user in users:
@@ -56,7 +56,7 @@ async def approve(event: NewMessage.Event) -> None:
                 if user.id in data_read['approved_users']:
                     skipped.append(href)
                 else:
-                    with open('Database/database.json', 'w') as f:
+                    with open('userbot/databasedatabase.json', 'w') as f:
                         approvedUsers = data_read['approved_users']
                         approvedUsername = data_read['approved_username']
                         approvedUsers.append(user.id)
@@ -87,14 +87,14 @@ async def disapprove(event: NewMessage.Event) -> None:
     users = await get_users(event)
     disapproved = []
     skipped = []
-    with open('Database/database.json') as json_file:
+    with open('userbot/databasedatabase.json') as json_file:
         data_read = json.load(json_file)
     if users:
         for user in users:
             href = await get_chat_link(user)
             if 'yourself' not in href:
                 if user.id in data_read['approved_users']:
-                    with open('Database/database.json', 'w') as f:
+                    with open('userbot/databasedatabase.json', 'w') as f:
                         approvedUsers = data_read['approved_users']
                         approvedUsername = data_read['approved_username']
                         approvedUsers.remove(user.id)
@@ -124,7 +124,7 @@ async def disapprove(event: NewMessage.Event) -> None:
     outgoing=True, regex=r"approved$"
 )
 async def approved(event: NewMessage.Event) -> None:
-    with open('Database/database.json') as json_file:
+    with open('userbot/databasedatabase.json') as json_file:
         data_read = json.load(json_file)
     if data_read['approved_username']:
         text = "**Utenti approvati:**\n"
@@ -254,7 +254,7 @@ async def awayfromkeyboard(event: NewMessage.Event) -> None:
 
 @client.createCommand(incoming=True, edited=False)
 async def inc_listner(event: NewMessage.Event) -> None:
-    with open('Database/database.json') as json_file:
+    with open('userbot/databasedatabase.json') as json_file:
         data_read = json.load(json_file)
     sender = await event.get_sender()
     if event.from_scheduled or (isinstance(sender, types.User) and sender.bot):
@@ -296,7 +296,7 @@ async def inc_listner(event: NewMessage.Event) -> None:
 
 
 async def _append_msg(variable: dict, chat: int, event: int) -> None:
-    with open('Database/database.json') as json_file:
+    with open('userbot/databasedatabase.json') as json_file:
         data_read = json.load(json_file)
     if chat in variable:
         variable[chat]['mentions'].append(event)

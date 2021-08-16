@@ -22,13 +22,13 @@ async def mute(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     users = await get_users(event)
     chatid = str(event.chat_id)
-    with open('Database/muted.json', encoding="utf8") as json_file:
+    with open('userbot/databasemuted.json', encoding="utf8") as json_file:
         data_read = json.load(json_file)
     if event.is_private:
         href = await get_chat_link(event.chat)
         if 'yourself' not in href:
             if chatid not in data_read['muted_list']:
-                with open('Database/muted.json', 'w', encoding='utf8') as f:
+                with open('userbot/databasemuted.json', 'w', encoding='utf8') as f:
                     await event.edit("✅ __Hai mutato__ " + href + '!')
                     data = data_read
                     data['muted_list'].append(chatid)
@@ -41,14 +41,14 @@ async def mute(event: NewMessage.Event) -> None:
                 for user in users:
                     if chatid not in data_read:
                         await event.edit(f"✅ __Hai mutato con successo __@{user.username}__ in questo gruppo!__")
-                        with open('Database/muted.json', 'w', encoding='utf8') as f:
+                        with open('userbot/databasemuted.json', 'w', encoding='utf8') as f:
                             data = data_read
                             data[chatid] = [user.id]
                             f.write(json.dumps(data))
                     else:
                         if user.id not in data_read[chatid]:
                             await event.edit(f"✅ __Hai mutato con successo __@{user.username}__ in questo gruppo!__")
-                            with open('Database/muted.json', 'w', encoding='utf8') as f:
+                            with open('userbot/databasemuted.json', 'w', encoding='utf8') as f:
                                 data = data_read
                                 data[chatid].append(user.id)
                                 f.write(json.dumps(data))
@@ -66,13 +66,13 @@ async def unmute(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     users = await get_users(event)
     chatid = str(event.chat_id)
-    with open('Database/muted.json', encoding="utf8") as json_file:
+    with open('userbot/databasemuted.json', encoding="utf8") as json_file:
         data_read = json.load(json_file)
     if event.is_private:
         href = await get_chat_link(event.chat)
         if 'yourself' not in href:
             if chatid in data_read['muted_list']:
-                with open('Database/muted.json', 'w', encoding='utf8') as f:
+                with open('userbot/databasemuted.json', 'w', encoding='utf8') as f:
                     await event.edit(f"✅ __Hai smutato__ " + href + '!')
                     data = data_read
                     data['muted_list'].remove(chatid)
@@ -88,7 +88,7 @@ async def unmute(event: NewMessage.Event) -> None:
                     else:
                         if user.id in data_read[chatid]:
                             await event.edit(f"✅ __Hai smutato con successo __@{user.username}__ in questo gruppo!__")
-                            with open('Database/muted.json', 'w', encoding='utf8') as f:
+                            with open('userbot/databasemuted.json', 'w', encoding='utf8') as f:
                                 data = data_read
                                 data[chatid].remove(user.id)
                                 f.write(json.dumps(data))
@@ -121,7 +121,7 @@ async def get_users(event: NewMessage.Event) -> types.User or None:
 @client.createCommand(incoming=True, edited=False)
 async def listner(event: NewMessage.Event) -> None:
     chat_id = str(event.chat_id)
-    with open('Database/muted.json', encoding="utf8") as json_file:
+    with open('userbot/databasemuted.json', encoding="utf8") as json_file:
         data_read = json.load(json_file)
     if event.is_private:
         if chat_id in data_read['muted_list']:
