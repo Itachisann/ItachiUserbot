@@ -9,8 +9,8 @@ from speedtest import Speedtest
 from telethon.tl import functions
 
 from userbot import client
-from userbot.utils.helpers import get_chat_link, format_speed
-from userbot.utils.events import command
+from userbot.core.helpers import get_chat_link, format_speed
+from userbot.core.events import command
 
 
 plugin_category = "www"

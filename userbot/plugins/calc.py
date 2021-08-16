@@ -6,8 +6,8 @@ import inspect
 from meval import meval
 
 from userbot import client
-from userbot.utils.helpers import get_chat_link
-from userbot.utils.events import command
+from userbot.core.helpers import get_chat_link
+from userbot.core.events import command
 
 
 plugin_category = "calculator"

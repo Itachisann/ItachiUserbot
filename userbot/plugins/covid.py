@@ -2,7 +2,7 @@
 from covid import Covid
 
 from userbot import client
-from userbot.utils.events import command
+from userbot.core.events import command
 from googletrans import Translator
 
 plugin_category = "pandemic"

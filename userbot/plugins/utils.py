@@ -8,10 +8,10 @@ from telethon.utils import get_display_name, get_peer_id
 from telethon.tl import functions, types
 
 from userbot import client, LOGGER
-from userbot.other_func.parser import Parser
-from userbot.utils.events import command
+from userbot.plugins.functions.parser import Parser
+from userbot.core.events import command
 
-plugin_category = "utils"
+plugin_category = "core"
 
 @client.createCommand(
     command=("spam [Numero messaggi] [Messaggio]", plugin_category),
@@ -78,13 +78,13 @@ async def typechar(event: command.Event) -> None:
         try:
             await event.edit(f"`{typing_text}`")
         except Exception as e:
-            logger.warn(str(e))
+            LOGGER.warn(str(e))
             pass
         await asyncio.sleep(DELAY_BETWEEN_EDITS)
         try:
             await event.edit(f"`{previous_text}`")
         except Exception as e:
-            logger.warn(str(e))
+            LOGGER.warn(str(e))
             pass
         await asyncio.sleep(DELAY_BETWEEN_EDITS)
     

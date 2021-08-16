@@ -7,17 +7,12 @@ import json
 from telethon.tl import types
 
 from userbot import client
-from userbot.utils.events import command
-from userbot.other_func.misc import get_rights
-from userbot.utils.helpers import get_chat_link
+from userbot.core.events import command
+from userbot.core.helpers import get_chat_link
+from userbot.plugins.functions.functions import get_rights
 import time
 
 plugin_category = 'filter'
-if not os.path.exists('muted.json'):
-    with open('muted.json', 'w', encoding="utf8") as f:
-        data = {}
-        data['muted_list'] = []
-        f.write(json.dumps(data))
 
 @client.createCommand(
     command=("mute [Utente]", plugin_category),

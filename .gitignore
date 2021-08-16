@@ -11,8 +11,8 @@ YT_DL/
 __pycache__/*
 userbot/__pycache__/*
 userbot/plugins/__pycache__/*
-userbot/other_funcs/__pycache__/*
-userbot/utils/__pycache__/*
+userbot/plugins/functions/__pycache__/*
+userbot/core/__pycache__/*
 sessions/__pycache__/*
 
 

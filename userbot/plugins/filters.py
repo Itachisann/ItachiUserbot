@@ -1,18 +1,14 @@
 import datetime
-import os
-import time
-import re
-from typing import Dict, List, Tuple
 import json
+import os
+import re
+import time
+from typing import Dict, List, Tuple
 
 from userbot import client
-from userbot.utils.events import command
+from userbot.core.events import command
 
 plugin_category = 'filter'
-if not os.path.exists('filters.json'):
-    with open('filters.json', 'w', encoding="utf8") as f:
-        data = {}
-        f.write(json.dumps(data))
         
 @client.createCommand(
     command=("addfilter [Filtro] [Testo]", plugin_category),

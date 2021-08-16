@@ -9,10 +9,9 @@ import re
 import typing
 
 from telethon import errors, events
-from telethon.extensions import markdown, html
+from telethon.extensions import html, markdown
+from telethon.hints import DateLike, FileLike, MarkupLike
 from telethon.tl import custom, functions, types
-from telethon.hints import FileLike, MarkupLike, DateLike
-
 
 LOGGER = logging.getLogger(__name__)
 MAXLIM: int = 4096

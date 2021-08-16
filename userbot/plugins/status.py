@@ -9,23 +9,12 @@ import json
 from telethon.tl import functions, types
 
 from userbot import client
-from userbot.utils.helpers import get_chat_link
-from userbot.utils.events import command
+from userbot.core.events import command
 from telethon.events import StopPropagation
-import time
 from userbot.plugins import plugins_data
-from userbot.utils.helpers import _humanfriendly_seconds, get_chat_link
+from userbot.core.helpers import _humanfriendly_seconds, get_chat_link
 
 plugin_category = "status"
-PM_PERMIT = client.config['userbot'].getboolean('pm_permit', True)
-
-if not os.path.exists('database.json'):
-    with open('database.json', 'w') as f:
-        data = {}
-        data['approved_users'] = []
-        data['approved_username'] = []
-        f.write(json.dumps(data))
-
 DEFAULT_UNMUTE_SETTINGS = types.InputPeerNotifySettings(
     show_previews=True,
     silent=False

@@ -15,8 +15,8 @@ import urllib.parse
 from telethon.utils import get_extension
 
 from userbot import client
-from userbot.utils.helpers import get_chat_link, is_ffmpeg_there
-from userbot.utils.events import command
+from userbot.core.helpers import get_chat_link, is_ffmpeg_there
+from userbot.core.events import command
 
 
 opener = urllib.request.build_opener()

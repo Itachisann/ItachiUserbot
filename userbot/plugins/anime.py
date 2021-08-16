@@ -1,10 +1,10 @@
-import asyncio
-import requests
-from urllib.request import urlopen
 import json
 import os
+from urllib.request import urlopen
+
+import requests
 from userbot import client
-from userbot.utils.events import command
+from userbot.core.events import command
 
 plugin_category = 'anime'
 @client.createCommand(

@@ -12,11 +12,10 @@ from typing import Tuple, Union
 from telethon import errors
 from telethon.tl import types
 from telethon.utils import get_display_name
+from userbot.plugins import plugins_data
 
 from .client import UserBotClient
 from .events import command
-from userbot.plugins import plugins_data
-
 
 LOGGER = logging.getLogger('userbot')
 

@@ -9,9 +9,9 @@ import sys
 
 from telethon.tl import types
 
-from .utils.config_helper import resolve_env
-from .utils.client import UserBotClient
-from .utils.log_formatter import CustomFormatter, CustomMemoryHandler
+from .core.config_helper import resolve_env
+from .core.client import UserBotClient
+from .core.log_formatter import CustomFormatter, CustomMemoryHandler
 
 
 __version__ = "v0.1"
@@ -54,17 +54,9 @@ if config_file.exists():
 try:
     resolve_env(config)
 except ValueError:
-    print(
-        "Please make sure you have a proper config.ini in this directory "
-        "or the required environment variables set."
-        "\nExiting the script."
-    )
     sys.exit(1)
 
 if "telethon" not in config:
-    print(
-        "You're not using a valid config, refer to the sample_config.ini"
-    )
     sys.exit(1)
 
 telethon = config['telethon']

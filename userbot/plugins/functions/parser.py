@@ -3,8 +3,7 @@ from typing import Union
 
 from telethon.tl import types
 from telethon.utils import get_peer_id
-
-from ..utils.events import command
+from userbot.core.events import command
 
 
 class Parser:

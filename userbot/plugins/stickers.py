@@ -9,8 +9,8 @@ from typing import BinaryIO, List, Sequence, Tuple, Union
 from telethon.tl import functions, types, custom
 
 from userbot import client, LOGGER
-from userbot.utils.helpers import get_chat_link
-from userbot.utils.events import command
+from userbot.core.helpers import get_chat_link
+from userbot.core.events import command
 
 
 plugin_category = "stickers"

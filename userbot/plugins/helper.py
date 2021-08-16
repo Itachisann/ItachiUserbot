@@ -4,8 +4,7 @@ import re
 from typing import Tuple
 
 from userbot import client
-from userbot.utils.events import command
-
+from userbot.core.events import command
 
 plugin_category: str = "helper"
 split_exp: re.Pattern = re.compile(r'\||\/')

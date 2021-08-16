@@ -2,7 +2,6 @@ import configparser
 import os
 from distutils.util import strtobool
 
-
 sample_config_file = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
     'sample_config.ini'

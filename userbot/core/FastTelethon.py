@@ -11,7 +11,7 @@ from typing import (
     Awaitable, DefaultDict, Tuple, BinaryIO
 )
 
-from telethon import utils, helpers, TelegramClient
+from telethon import core, helpers, TelegramClient
 from telethon.crypto import AuthKey
 from telethon.network import MTProtoSender
 from telethon.tl.functions.auth import (
@@ -243,7 +243,7 @@ class ParallelTransferrer:
         )
         # print("init_upload count is ", connection_count)
         part_size = (
-            (part_size_kb or utils.get_appropriated_part_size(file_size)) *
+            (part_size_kb or core.get_appropriated_part_size(file_size)) *
             1024
         )
         part_count = (file_size + part_size - 1) // part_size
@@ -271,7 +271,7 @@ class ParallelTransferrer:
         # print("download count is ", connection_count)
 
         part_size = (
-            (part_size_kb or utils.get_appropriated_part_size(file_size)) *
+            (part_size_kb or core.get_appropriated_part_size(file_size)) *
             1024
         )
         part_count = math.ceil(file_size / part_size)
@@ -351,7 +351,7 @@ async def download_file(
     out: BinaryIO, progress_callback: callable = None
 ) -> BinaryIO:
     size = location.size
-    dc_id, location = utils.get_input_location(location)
+    dc_id, location = core.get_input_location(location)
     # We lock the transfers because telegram has connection count limits
     downloader = ParallelTransferrer(self, dc_id)
     downloaded = downloader.download(location, size)

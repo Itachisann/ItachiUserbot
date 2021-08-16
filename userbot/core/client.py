@@ -7,15 +7,14 @@ import logging
 import traceback
 from typing import Dict, List
 
-from telethon import events, TelegramClient
+from telethon import TelegramClient, events
 from telethon.tl import types
 
+from .custom import answer, resanswer
+from .events import MessageEdited, command
 from .FastTelethon import download_file, upload_file
 from .parser import parse_arguments
 from .pluginManager import PluginManager
-from .events import MessageEdited, command
-from .custom import answer, resanswer
-
 
 LOGGER = logging.getLogger(__name__)
 no_info = "There is no description available for this command!"

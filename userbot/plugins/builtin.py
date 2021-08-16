@@ -5,9 +5,9 @@ import logging
 import os
 import sys
 
-from userbot import client, LOGGER, loggingHandler
-from userbot.utils.events import command
-from userbot.utils.helpers import restart
+from userbot import client
+from userbot.core.events import command
+from userbot.core.helpers import restart
 
 
 @client.createCommand(

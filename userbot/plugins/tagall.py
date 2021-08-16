@@ -1,5 +1,5 @@
 from userbot import client
-from userbot.utils.events import command
+from userbot.core.events import command
 from telethon.utils import get_display_name
 import requests
 from bs4 import BeautifulSoup

@@ -7,8 +7,8 @@ from telethon.utils import get_display_name, get_peer_id
 from telethon.tl import functions, types
 
 from userbot import client, LOGGER
-from userbot.other_func.parser import Parser
-from userbot.utils.events import command
+from userbot.plugins.functions.parser import Parser
+from userbot.core.events import command
 
 
 plugin_category = "user"
