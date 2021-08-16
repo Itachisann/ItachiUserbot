@@ -16,7 +16,7 @@ plugin_category = 'tagall'
     outgoing=True,regex=r"tagall(?: |$)(.*)"
 )
 async def tagall(event: NewMessage.Event) -> None:
-    if (event.is_group or event.is_channel)
+    if event.is_group or event.is_channel:
         await event.delete()
         if event.fwd_from:
             return
