@@ -20,7 +20,7 @@ if not os.path.exists('muted.json'):
         f.write(json.dumps(data))
 
 @client.onMessage(
-    command=("<code>mute</code> <code>[Utente]</code>", plugin_category),
+    command=("mute [Utente]", plugin_category),
     outgoing=True, regex=r"mute(?: |$)(.+)?$"
 )
 async def mute(event: NewMessage.Event) -> None: 
@@ -63,7 +63,7 @@ async def mute(event: NewMessage.Event) -> None:
             await event.edit('__💢 Non hai i permessi necessari per mutare in questo gruppo!__') 
 
 @client.onMessage(
-    command=("<code>unmute</code> <code>[Utente]</code>", plugin_category),
+    command=("unmute [Utente]", plugin_category),
     outgoing=True, regex=r"unmute(?: |$)(.+)?$"
 )
 async def unmute(event: NewMessage.Event) -> None: 

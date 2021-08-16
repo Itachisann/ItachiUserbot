@@ -14,7 +14,7 @@ plugin_category = "calculator"
 
 
 @client.onMessage(
-    command=("<code>calc</code> <code>[Operazioni]</code>", plugin_category),
+    command=("calc [Operazioni]", plugin_category),
     outgoing=True, regex=r"calc(?: |$|\n)([\s\S]*)"
 )
 async def calc(event: NewMessage.Event) -> None:

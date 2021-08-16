@@ -49,7 +49,7 @@ currently_afk_reason = (
 )
 
 @client.onMessage(
-    command=("<code>approve</code> <code>[Utente]</code>", plugin_category),
+    command=("approve [Utente]", plugin_category),
     outgoing=True, regex=r"approve(?: |$)(.+)?$"
 )
 async def approve(event: NewMessage.Event) -> None:
@@ -92,7 +92,7 @@ async def approve(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("<code>disapprove</code> <code>[Utente]</code>", plugin_category),
+    command=("disapprove [Utente]", plugin_category),
     outgoing=True, regex=r"(?:un|dis)approv(?:a|e)(?: |$)(.+)?$"
 )
 async def disapprove(event: NewMessage.Event) -> None:
@@ -132,7 +132,7 @@ async def disapprove(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("<code>approved</code>", plugin_category),
+    command=("approved", plugin_category),
     outgoing=True, regex=r"approved$"
 )
 async def approved(event: NewMessage.Event) -> None:
@@ -167,7 +167,7 @@ async def get_users(event: NewMessage.Event) -> types.User or None:
 
 
 @client.onMessage(
-    command="<code>afk</code>",
+    command="afk",
     outgoing=True, regex="(p)?afk(?: |$)(.*)?$"
 )
 async def awayfromkeyboard(event: NewMessage.Event) -> None:

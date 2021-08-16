@@ -36,7 +36,7 @@ or use {}stickerpack reset for deafult packs.`"""
 
 
 @client.onMessage(
-    command=("<code>getpic</code>", plugin_category),
+    command=("getpic", plugin_category),
     outgoing=True, regex="getpic(?: |$)(file|document)?$"
 )
 async def getsticker(event: NewMessage.Event) -> None:
@@ -77,7 +77,7 @@ async def getsticker(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("<code>pack</code>", plugin_category),
+    command=("pack", plugin_category),
     outgoing=True, regex=r"pack(?: |$)(.*)"
 )
 async def stickerpack(event: NewMessage.Event) -> None:

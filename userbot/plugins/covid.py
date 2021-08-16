@@ -9,7 +9,7 @@ plugin_category = "pandemic"
 covid_str = f"`Casi totali registrati:`  **%(confirmed)s**\n`Positivi attuali:`  **%(active)s**\n`Morti giornalieri:`  **%(new_deaths)s**\n`Nuovi casi:`  **%(new_cases)s**"
 
 @client.onMessage(
-    command="<code>covid</code> <code>(Nazione)</code>",
+    command="covid (Nazione)",
     outgoing=True, regex="(?:covid|corona)(?: |$)(.*)"
 )
 async def covid19(event: NewMessage.Event) -> None:

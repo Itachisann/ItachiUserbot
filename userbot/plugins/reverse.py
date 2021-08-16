@@ -32,30 +32,20 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36"""
 
 
 @client.onMessage(
-    command="<code>search</code>", outgoing=True, regex=r"search(?: |$)(\d*)"
+    command="reverse", outgoing=True, regex="(?:reversesearch|reverse)(?: |$)(\d*)"
 )
 async def search(event: NewMessage.Event) -> None:
     reply = await event.get_reply_message()
     if reply and reply.media:
         ffmpeg = await is_ffmpeg_there()
+        await event.answer("`Sto scaricando il media :)`") 
         ext = get_extension(reply.media)
         if reply.gif:
-            if not ffmpeg:
-                await event.answer("`Install FFMPEG to reverse search GIFs.`")
-                return
             ext = ".gif"
-        if reply.video:
-            if not ffmpeg:
-                await event.answer(
-                    "`Install FFMPEG to reverse search videos.`"
-                )
-                return
         acceptable = [".jpg", ".gif", ".png", ".bmp", ".tif", ".webp", ".mp4"]
         if ext not in acceptable:
             await event.answer("`Bel tentativo :)`")
             return
-
-        await event.answer("`Downloading media...`")
         if (reply.video or reply.gif) and ffmpeg:
             message = f"{event.chat_id}:{event.message.id}"
             await client.download_media(reply, "media.mp4")
@@ -67,7 +57,6 @@ async def search(event: NewMessage.Event) -> None:
                 stderr=asyncio.subprocess.PIPE
             )
             client.running_processes[message] = process
-            await event.answer("`Converting the mp4 to a gif...`")
             await process.communicate()
             client.running_processes.pop(message)
             photo = io.BytesIO(io.open("media.gif", mode="rb").read())
@@ -76,11 +65,10 @@ async def search(event: NewMessage.Event) -> None:
         else:
             photo = io.BytesIO()
             await client.download_media(reply, photo)
+        await event.answer("`Sto cercando risultati..`") 
     else:
-        await event.answer("`Rispondi ad una foto o ad un'animazione.`")
+        await event.answer("`Rispondi ad un media.`")
         return
-
-    await event.answer("`Cercando in rete..`")
     response = await _run_sync(functools.partial(
         _post, f"media{ext}", photo.getvalue()
     ))
@@ -89,7 +77,7 @@ async def search(event: NewMessage.Event) -> None:
     photo.close()
 
     if not response.ok:
-        await event.answer("`Google said go away for a while.`")
+        await event.answer("`Google non ha collaborato per un momento..`")
         return
 
     await event.answer("`Ottenendo il risultato..`")
@@ -103,7 +91,7 @@ async def search(event: NewMessage.Event) -> None:
     matching = match['matching']
 
     if guess:
-        text = f"**Possibile ricerca trovata:** [{guess}]({fetchUrl})"
+        text = f"**Possibile risultato trovato:** [{guess}]({fetchUrl})"
         if imgspage:
             text += f"\n\n[Visually similar images]({imgspage})"
         if matching_text and matching:

@@ -9,7 +9,7 @@ plugin_category = "user"
 
 
 @client.onMessage(
-    command=("<code>purge</code>", "admin"), require_admin=True,
+    command=("purge", "admin"), require_admin=True,
     outgoing=True, regex=r"purge(?: |$)(.*)"
 )
 async def purge(event: NewMessage.Event) -> None:
@@ -50,7 +50,7 @@ async def purge(event: NewMessage.Event) -> None:
 
 
 @client.onMessage(
-    command=("<code>del</code>", plugin_category),
+    command=("del", plugin_category),
     outgoing=True, regex=r"del(?: |$)(.*)"
 )
 async def delme(event: NewMessage.Event) -> None:

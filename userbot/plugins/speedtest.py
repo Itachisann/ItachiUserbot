@@ -28,7 +28,7 @@ upload = "`Upload: %0.2f %s%s/s`"
 
 
 @client.onMessage(
-    command=("<code>speedtest</code>", plugin_category),
+    command=("speedtest", plugin_category),
     outgoing=True, regex=r"speedtest(?: |$)(bit|byte)?s?$"
 )
 async def speedtest(event: NewMessage.Event) -> None:

@@ -15,7 +15,7 @@ if not os.path.exists('filters.json'):
         f.write(json.dumps(data))
         
 @client.onMessage(
-    command=("<code>addfilter</code> <code>[Filtro] [Testo]</code>", plugin_category),
+    command=("addfilter [Filtro] [Testo]", plugin_category),
     outgoing=True, regex=r"addfilter(?: |$)(.+)?$"
 )       
 async def addfilter(event: NewMessage.Event) -> None: 
@@ -44,7 +44,7 @@ async def addfilter(event: NewMessage.Event) -> None:
            
            
 @client.onMessage(
-    command=("<code>delfilter</code> <code>[Filtro]</code>", plugin_category),
+    command=("delfilter [Filtro]", plugin_category),
     outgoing=True, regex=r"(?:delfilter|unfilter)(?: |$)(.+)?$"
 )       
 async def delfilter(event: NewMessage.Event) -> None: 
@@ -77,7 +77,7 @@ async def listner(event: NewMessage.Event) -> None:
         await event.respond(data_read[arg[0]]) 
     
 @client.onMessage(
-    command=("<code>filterlist</code>", plugin_category),
+    command=("filterlist", plugin_category),
     outgoing=True, regex=r"(?:filterlist|filters)(?: |$)(.+)?$"
 )       
 async def filterlist(event: NewMessage.Event) -> None: 
