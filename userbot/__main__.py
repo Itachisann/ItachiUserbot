@@ -8,8 +8,8 @@ from telethon.errors import AuthKeyError, InvalidBufferError
 
 import userbot
 from userbot import client
-from .core import helpers, pluginManager
 
+from .core import helpers, pluginManager
 
 LOGGER = logging.getLogger('userbot')
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     try:
         if sys.platform.startswith('win'):
-            client.loop.call_later(0.1, wakeup)  # Needed for SIGINT handling
+            client.loop.call_later(0.1, wakeup)
         client.loop.run_until_complete(client.disconnected)
         if client.reconnect:
             LOGGER.info("Client was disconnected, restarting the script.")

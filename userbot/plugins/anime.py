@@ -4,17 +4,19 @@ from urllib.request import urlopen
 
 import requests
 from userbot import client
-from userbot.core.events import command
+from userbot.core.events import NewMessage
 
 plugin_category = 'anime'
+
+
 @client.createCommand(
     command=("waifu", plugin_category),
     outgoing=True, regex="(?:waifu|randomwaifu)(?: |$)(.+)?$"
 )
-async def animepic(event: command.Event) -> None: 
+async def animepic(event: NewMessage.Event) -> None:
     if event.fwd_from:
         return
-    await event.answer("__Sto ottenendo la tua waifu...__")    
+    await event.answer("__Sto ottenendo la tua waifu...__")
     URL = urlopen("https://api.waifu.pics/sfw/waifu")
     data = json.loads(URL.read().decode())
     waifu = (data['url'])

@@ -1,9 +1,9 @@
 
-from userbot.core.events import command
+from userbot.core.events import NewMessage
 
 
 async def get_rights(
-    event: command.Event,
+    event: NewMessage.Event,
     change_info: bool = False,
     post_messages: bool = False,
     edit_messages: bool = False,

@@ -15,7 +15,7 @@ from telethon.utils import get_display_name
 from userbot.plugins import plugins_data
 
 from .client import UserBotClient
-from .events import command
+from .events import NewMessage
 
 LOGGER = logging.getLogger('userbot')
 
@@ -30,13 +30,15 @@ def printVersion(version: int, prefix: str) -> None:
     if not prefix:
         prefix = '.'
     LOGGER.warning(
-        "UserBot {0} collegato. Prova a digitare {1}ping per verificare".format(version, prefix)
+        "UserBot {0} collegato. Prova a digitare {1}ping per verificare".format(
+            version, prefix)
     )
     print()
 
 
 async def isRestart(client: UserBotClient) -> None:
     userbot_restarted = os.environ.get('userbot_restarted', False)
+
     async def success_edit(text):
         entity = int(userbot_restarted.split('/')[0])
         message = int(userbot_restarted.split('/')[1])
@@ -66,7 +68,7 @@ def restarter(client: UserBotClient) -> None:
         os.execle(executable, *args, os.environ)
 
 
-async def restart(event: command.Event) -> None:
+async def restart(event: NewMessage.Event) -> None:
     event.client.reconnect = False
     restart_message = f"{event.chat_id}/{event.message.id}"
     os.environ['userbot_restarted'] = restart_message
@@ -108,7 +110,7 @@ async def _human_friendly_timedelta(timedelta: str) -> str:
 
 
 async def get_chat_link(
-    arg: Union[types.User, types.Chat, types.Channel, command.Event],
+    arg: Union[types.User, types.Chat, types.Channel, NewMessage.Event],
     reply=None
 ) -> str:
     if isinstance(arg, (types.User, types.Chat, types.Channel)):

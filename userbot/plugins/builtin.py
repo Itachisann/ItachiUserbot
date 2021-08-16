@@ -6,7 +6,7 @@ import os
 import sys
 
 from userbot import client
-from userbot.core.events import command
+from userbot.core.events import NewMessage
 from userbot.core.helpers import restart
 
 
@@ -14,7 +14,7 @@ from userbot.core.helpers import restart
     command=('ping', 'www'),
     outgoing=True, regex='ping$', builtin=True
 )
-async def ping(event: command.Event) -> None:
+async def ping(event: NewMessage.Event) -> None:
     start = datetime.datetime.now()
     await event.answer("**Ping**")
     duration = (datetime.datetime.now() - start)
@@ -26,7 +26,5 @@ async def ping(event: command.Event) -> None:
     command=("restart", 'misc'),
     outgoing=True, regex='restart$', builtin=True
 )
-async def restarter(event: command.Event) -> None:
+async def restarter(event: NewMessage.Event) -> None:
     await restart(event)
-
-

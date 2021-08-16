@@ -1,17 +1,13 @@
 
 import asyncio
 import concurrent
-import sys
 from typing import Tuple
 
-from speedtest import Speedtest
-
-from telethon.tl import functions
-
 from userbot import client
-from userbot.core.helpers import get_chat_link, format_speed
-from userbot.core.events import command
+from userbot.core.events import NewMessage
+from userbot.core.helpers import format_speed, get_chat_link
 
+from speedtest import Speedtest
 
 plugin_category = "www"
 DCs = {
@@ -26,12 +22,11 @@ download = "`Download: %0.2f %s%s/s`"
 upload = "`Upload: %0.2f %s%s/s`"
 
 
-
 @client.createCommand(
     command=("speedtest", plugin_category),
     outgoing=True, regex=r"speedtest(?: |$)(bit|byte)?s?$"
 )
-async def speedtest(event: command.Event) -> None:
+async def speedtest(event: NewMessage.Event) -> None:
     unit = ("bit", 1)
     arg = event.matches[0].group(1)
     if arg and arg.lower() == "byte":
@@ -40,7 +35,6 @@ async def speedtest(event: command.Event) -> None:
     s = Speedtest()
     speed_event = await event.answer(testing % s.results.client)
     await _run_sync(s.get_servers)
-
 
     await _run_sync(s.download)
     down, unit0, unit1 = await format_speed(s.results.download, unit)

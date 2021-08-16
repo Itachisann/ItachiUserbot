@@ -1,14 +1,11 @@
 
 
-import asyncio
 import inspect
 
 from meval import meval
-
 from userbot import client
+from userbot.core.events import NewMessage
 from userbot.core.helpers import get_chat_link
-from userbot.core.events import command
-
 
 plugin_category = "calculator"
 
@@ -17,7 +14,7 @@ plugin_category = "calculator"
     command=("calc [Operazioni]", plugin_category),
     outgoing=True, regex=r"calc(?: |$|\n)([\s\S]*)"
 )
-async def calc(event: command.Event) -> None:
+async def calc(event: NewMessage.Event) -> None:
     expression = event.matches[0].group(1).strip()
     reply = await event.get_reply_message()
     if not expression:

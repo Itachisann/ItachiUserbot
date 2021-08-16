@@ -1,15 +1,13 @@
 
 import io
+
 import PIL
-
 from telethon import errors
-from telethon.utils import get_display_name, get_peer_id
 from telethon.tl import functions, types
-
-from userbot import client, LOGGER
+from telethon.utils import get_peer_id
+from userbot import LOGGER, client
+from userbot.core.events import NewMessage
 from userbot.plugins.functions.parser import Parser
-from userbot.core.events import command
-
 
 plugin_category = "user"
 
@@ -18,7 +16,7 @@ plugin_category = "user"
     command=("info [Utente]", plugin_category),
     outgoing=True, regex=r"info(?: |$|\n)([\s\S]*)"
 )
-async def info(event: command.Event) -> None:
+async def info(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     entities = []
     if match:
@@ -71,7 +69,7 @@ async def info(event: command.Event) -> None:
             await event.delete()
             await client.send_message(event.chat_id, "<b>⚙️ INFO UTENTE ⚙️ </b>" + users, file=photo, parse_mode='html')
         else:
-            await event.answer("<b>⚙️ INFO UTENTE ⚙️ </b>" + users, parse_mode='html' )        
+            await event.answer("<b>⚙️ INFO UTENTE ⚙️ </b>" + users, parse_mode='html')
     if chats:
         await event.answer("<b>⚙️ INFO GRUPPO ⚙️</b>" + chats, parse_mode='html')
     if channels:
@@ -89,7 +87,7 @@ async def info(event: command.Event) -> None:
     command=("bio [Bio]", plugin_category),
     outgoing=True, regex="bio(?: |$)(.*)$"
 )
-async def bio(event: command.Event) -> None:
+async def bio(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     about = (await client(functions.users.GetFullUserRequest("self"))).about
     if not match:
@@ -113,7 +111,7 @@ async def bio(event: command.Event) -> None:
     command=("username [Username]", plugin_category),
     outgoing=True, regex="username(?: |$)(.*)$"
 )
-async def username(event: command.Event) -> None:
+async def username(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     u1 = (await client.get_me()).username
     if not match:
@@ -141,8 +139,8 @@ async def username(event: command.Event) -> None:
     command=("on", plugin_category),
     outgoing=True, regex="on(?: |$)(.*)$"
 )
-async def on(event: command.Event) -> None:
-    string = '[Online] ' 
+async def on(event: NewMessage.Event) -> None:
+    string = '[Online] '
     me = await client.get_me()
     if string not in me.first_name:
         new_name = string + me.first_name
@@ -151,7 +149,7 @@ async def on(event: command.Event) -> None:
     if '[Offline] ' in me.first_name:
         v = me.first_name
         new_name = v.replace('[Offline] ', string)
-        
+
     try:
         await client(functions.account.UpdateProfileRequest(
             first_name=new_name
@@ -163,14 +161,12 @@ async def on(event: command.Event) -> None:
         await event.answer(f'```{await client.get_traceback(e)}```')
 
 
-
-
 @client.createCommand(
     command=("off", plugin_category),
     outgoing=True, regex="off(?: |$)(.*)$"
 )
-async def off(event: command.Event) -> None:
-    string = '[Offline] ' 
+async def off(event: NewMessage.Event) -> None:
+    string = '[Offline] '
     me = await client.get_me()
     if '[Online] ' in me.first_name:
         v = me.first_name
@@ -190,7 +186,7 @@ async def off(event: command.Event) -> None:
     command=("pfp", plugin_category),
     outgoing=True, regex="pfp$"
 )
-async def pfp(event: command.Event) -> None:
+async def pfp(event: NewMessage.Event) -> None:
     reply = await event.get_reply_message()
     if not reply:
         photo = await client(functions.users.GetFullUserRequest("self"))
@@ -201,7 +197,6 @@ async def pfp(event: command.Event) -> None:
         else:
             await event.answer("`Attualmente non hai foto profilo.`")
         return
-
 
     if (
         (reply.document and reply.document.mime_type.startswith("image")) or
@@ -217,7 +212,7 @@ async def pfp(event: command.Event) -> None:
             await event.answer(
                 f'```{await client.get_traceback(e)}```',
                 reply=True
-                )
+            )
             temp_file.close()
             return
         temp_file.seek(0)
@@ -258,7 +253,7 @@ async def pfp(event: command.Event) -> None:
     command=("id [Utente]", plugin_category),
     outgoing=True, regex=r"id(?: |$|\n)([\s\S]*)"
 )
-async def whichid(event: command.Event) -> None:
+async def whichid(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     text = ""
     if not match and not event.reply_to_msg_id:

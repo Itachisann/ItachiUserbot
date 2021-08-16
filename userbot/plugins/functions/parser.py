@@ -3,7 +3,7 @@ from typing import Union
 
 from telethon.tl import types
 from telethon.utils import get_peer_id
-from userbot.core.events import command
+from userbot.core.events import NewMessage
 
 
 class Parser:
@@ -11,7 +11,7 @@ class Parser:
     @staticmethod
     async def parse_full_user(
         usr_obj: types.UserFull,
-        event: command.Event
+        event: NewMessage.Event
     ) -> str:
         user = usr_obj.user
 
@@ -34,7 +34,7 @@ class Parser:
         about = usr_obj.about
         total_pics = (await event.client.get_profile_photos(user_id)).total
 
-        text = ""#"<b>USER</b>\n\n"
+        text = ""  # "<b>USER</b>\n\n"
         if first_name:
             text += f"\n  <b>👨🏻‍🔧 Nome:</b> {first_name}"
         if last_name:
@@ -52,13 +52,14 @@ class Parser:
             text += f"\n  <b>🔗 DC:</b> <code>{dc_id}</code>"
         if about:
             about = re.sub(r'(@\w{5,32})', r'</code>\1<code>', about, count=0)
-            text += re.sub(r'`{2}', r'', f"\n  <b>📕 Bio:\n </b> <code>{about}</code>")
+            text += re.sub(r'`{2}', r'',
+                           f"\n  <b>📕 Bio:\n </b> <code>{about}</code>")
         return text
 
     @staticmethod
     async def parse_full_chat(
         chat_obj: Union[types.ChatFull, types.ChannelFull],
-        event: command.Event
+        event: NewMessage.Event
     ) -> str:
         """Human-friendly string of a Chat/Channel obj's attributes"""
         full_chat = chat_obj.full_chat
@@ -78,7 +79,7 @@ class Parser:
         about = full_chat.about
         bots = len(full_chat.bot_info)
 
-        text = ""# f"<b>{obj_type}</b>\n"
+        text = ""  # f"<b>{obj_type}</b>\n"
         if title:
             text += f"\n  <b>👨🏻‍🔧 Nome:</b> <code>{title}</code>"
         if username:
@@ -89,11 +90,12 @@ class Parser:
         if participants:
             text += f"\n  <b>🔗 Partecipanti:</b> <code>{participants}</code>"
         if bots:
-            text += f"\n  <b>🤖 Bots:</b> <code>{bots}</code>"      
+            text += f"\n  <b>🤖 Bots:</b> <code>{bots}</code>"
         if obj_type == "CHANNEL":
             if online:
                 text += f"\n  <b>📯 Online:</b> <code>{online}</code>"
         if about:
             about = re.sub(r'(@\w{5,32})', r'</code>\1<code>', about, count=0)
-            text += re.sub(r'`{2}', r'', f"\n  <b>📕 Bio:\n</b><code>{about}</code>")                
+            text += re.sub(r'`{2}', r'',
+                           f"\n  <b>📕 Bio:\n</b><code>{about}</code>")
         return text

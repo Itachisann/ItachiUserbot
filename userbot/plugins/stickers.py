@@ -10,7 +10,7 @@ from telethon.tl import functions, types, custom
 
 from userbot import client, LOGGER
 from userbot.core.helpers import get_chat_link
-from userbot.core.events import command
+from userbot.core.events import NewMessage
 
 
 plugin_category = "stickers"
@@ -39,7 +39,7 @@ or use {}stickerpack reset for deafult packs.`"""
     command=("getpic", plugin_category),
     outgoing=True, regex="getpic(?: |$)(file|document)?$"
 )
-async def getsticker(event: command.Event) -> None:
+async def getsticker(event: NewMessage.Event) -> None:
     if not event.reply_to_msg_id:
         await event.answer("`Rispondi ad uno sticker per convertirlo.`")
         return
@@ -80,7 +80,7 @@ async def getsticker(event: command.Event) -> None:
     command=("pack", plugin_category),
     outgoing=True, regex=r"pack(?: |$)(.*)"
 )
-async def stickerpack(event: command.Event) -> None:
+async def stickerpack(event: NewMessage.Event) -> None:
     basic, animated = await _get_default_packs()
     basic = f"[Clicca qui](https://t.me/addstickers/{basic})"
     animated = f"[Clicca qui](https://t.me/addstickers/{animated})"
@@ -88,11 +88,12 @@ async def stickerpack(event: command.Event) -> None:
     await event.answer(text.format(basic, animated))
     return
 
+
 @client.createCommand(
     command=("addsticker", plugin_category),
     outgoing=True, regex=r"addsticker(?: |$)(.*)"
 )
-async def addsticker(event: command.Event) -> None:
+async def addsticker(event: NewMessage.Event) -> None:
     match = ''
     if event.reply_to_msg_id:
         sticker_event = await event.get_reply_message()
@@ -530,7 +531,7 @@ async def _get_default_packs() -> Tuple[str, str]:
     return basic, animated
 
 
-async def _is_sticker_event(event: command.Event) -> bool:
+async def _is_sticker_event(event: NewMessage.Event) -> bool:
     if event.sticker or event.photo:
         return True
     if event.document and "image" in event.document.mime_type:

@@ -9,7 +9,6 @@ sample_config_file = os.path.join(
 
 
 def resolve_env(config: configparser.ConfigParser):
-    """Check the environment variables and add them a configparser obj"""
     api_id = os.getenv('api_id', None)
     api_hash = os.getenv('api_hash', None)
 
@@ -45,15 +44,6 @@ def resolve_env(config: configparser.ConfigParser):
         )
     }
 
-    api_keys = {
-        'api_key_heroku': os.getenv(
-            'api_key_heroku', None
-        ),
-        'api_key_removebg': os.getenv(
-            'api_key_removebg', None
-        )
-    }
-
     plugins = {
         'repos': os.getenv(
             'repos', None
@@ -67,7 +57,6 @@ def resolve_env(config: configparser.ConfigParser):
     }
 
     make_config(config, 'userbot', userbot)
-    make_config(config, 'api_keys', api_keys)
     make_config(config, 'plugins', plugins)
 
 

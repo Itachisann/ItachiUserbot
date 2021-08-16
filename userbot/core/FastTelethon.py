@@ -1,30 +1,26 @@
 
 import asyncio
-import math
 import hashlib
 import inspect
 import logging
+import math
 import os
 from collections import defaultdict
-from typing import (
-    Optional, List, AsyncGenerator, Union,
-    Awaitable, DefaultDict, Tuple, BinaryIO
-)
+from typing import (AsyncGenerator, Awaitable, BinaryIO, DefaultDict, List,
+                    Optional, Tuple, Union)
 
-from telethon import core, helpers, TelegramClient
+from telethon import TelegramClient, helpers, utils
 from telethon.crypto import AuthKey
 from telethon.network import MTProtoSender
-from telethon.tl.functions.auth import (
-    ExportAuthorizationRequest, ImportAuthorizationRequest
-)
-from telethon.tl.functions.upload import (
-    GetFileRequest, SaveFilePartRequest, SaveBigFilePartRequest
-)
-from telethon.tl.types import (
-    Document, InputFileLocation, InputDocumentFileLocation,
-    InputPhotoFileLocation, InputPeerPhotoFileLocation, TypeInputFile,
-    InputFileBig, InputFile
-)
+from telethon.tl.functions.auth import (ExportAuthorizationRequest,
+                                        ImportAuthorizationRequest)
+from telethon.tl.functions.upload import (GetFileRequest,
+                                          SaveBigFilePartRequest,
+                                          SaveFilePartRequest)
+from telethon.tl.types import (Document, InputDocumentFileLocation, InputFile,
+                               InputFileBig, InputFileLocation,
+                               InputPeerPhotoFileLocation,
+                               InputPhotoFileLocation, TypeInputFile)
 
 log: logging.Logger = logging.getLogger(__name__)
 TypeLocation = Union[
@@ -243,7 +239,7 @@ class ParallelTransferrer:
         )
         # print("init_upload count is ", connection_count)
         part_size = (
-            (part_size_kb or core.get_appropriated_part_size(file_size)) *
+            (part_size_kb or utils.get_appropriated_part_size(file_size)) *
             1024
         )
         part_count = (file_size + part_size - 1) // part_size
@@ -271,7 +267,7 @@ class ParallelTransferrer:
         # print("download count is ", connection_count)
 
         part_size = (
-            (part_size_kb or core.get_appropriated_part_size(file_size)) *
+            (part_size_kb or utils.get_appropriated_part_size(file_size)) *
             1024
         )
         part_count = math.ceil(file_size / part_size)
@@ -351,7 +347,7 @@ async def download_file(
     out: BinaryIO, progress_callback: callable = None
 ) -> BinaryIO:
     size = location.size
-    dc_id, location = core.get_input_location(location)
+    dc_id, location = utils.get_input_location(location)
     # We lock the transfers because telegram has connection count limits
     downloader = ParallelTransferrer(self, dc_id)
     downloaded = downloader.download(location, size)

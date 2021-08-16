@@ -11,7 +11,7 @@ from telethon import TelegramClient, events
 from telethon.tl import types
 
 from .custom import answer, resanswer
-from .events import MessageEdited, command
+from .events import MessageEdited, NewMessage
 from .FastTelethon import download_file, upload_file
 from .parser import parse_arguments
 from .pluginManager import PluginManager
@@ -31,7 +31,6 @@ class Command:
 
 
 class UserBotClient(TelegramClient):
-    """UserBot client with additional attributes inheriting TelegramClient"""
     commandcategories: Dict[str, List[str]] = {}
     commands: Dict[str, Command] = {}
     config: configparser.ConfigParser = None
@@ -61,7 +60,7 @@ class UserBotClient(TelegramClient):
         kwargs.setdefault('forwards', False)
 
         def wrapper(func: callable) -> callable:
-            events.register(command(**kwargs))(func)
+            events.register(NewMessage(**kwargs))(func)
 
             if edited:
                 events.register(MessageEdited(**kwargs))(func)

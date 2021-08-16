@@ -1,10 +1,9 @@
 
-import os.path
 import re
 from typing import Tuple
 
 from userbot import client
-from userbot.core.events import command
+from userbot.core.events import NewMessage
 
 plugin_category: str = "helper"
 split_exp: re.Pattern = re.compile(r'\||\/')
@@ -14,12 +13,13 @@ split_exp: re.Pattern = re.compile(r'\||\/')
     command=("help", plugin_category), builtin=True,
     outgoing=True, regex=r"help(?: |$)(\w*)(?: |$)(dev|details|info)?"
 )
-async def helper(event: command.Event) -> None:
+async def helper(event: NewMessage.Event) -> None:
     arg = event.matches[0].group(1)
     enabled, senabled = await solve_commands(client.commands)
     if arg == '1' or not arg:
         text = "<b>🌍 Lista Comandi 🌍</b>\n\n"
-        text += "\n".join([f'<code>.{name}</code>' for name in sorted(enabled)])+"\n\n<i>Scrivi .help 2 per vedere le funzioni dei comandi!</i>"
+        text += "\n".join([f'<code>.{name}</code>' for name in sorted(enabled)]) + \
+            "\n\n<i>Scrivi .help 2 per vedere le funzioni dei comandi!</i>"
     elif arg == '2':
         text = """<b>— Comando | Funzione</b> —
 
@@ -95,6 +95,7 @@ async def helper(event: command.Event) -> None:
 
 </i><code>.waifu</code> | <i>Tramite questo comando è possibile generare una foto di una waifu.</i>"""
     await event.answer(text, parse_mode='html')
+
 
 async def solve_commands(commands: dict) -> Tuple[dict, dict]:
     new_dict: dict = {}

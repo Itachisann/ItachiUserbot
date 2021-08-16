@@ -9,14 +9,13 @@ import os
 import os.path
 import pathlib
 import re
-import requests
 import shutil
 import sys
 import types
 from typing import Dict, List, Tuple, Union
 
-from telethon import events, TelegramClient
-
+import requests
+from telethon import TelegramClient, events
 
 LOGGER = logging.getLogger(__name__)
 package_patern = re.compile(r'([\w-]+)(?:=|<|>|!)')
@@ -47,6 +46,7 @@ class Plugin:
 
 class SourcelessPluginLoader(importlib.abc.SourceLoader):
     """Loader for (byte) strings which don't have a source."""
+
     def __init__(self, name, data, path: str = '<string>'):
         self.data = data
         self.path = path
@@ -104,7 +104,6 @@ class PluginManager:
             sys.exit(1)
 
     def import_all(self) -> None:
-        """Import all the (enabled) plugins and skip the rest."""
         importlib.invalidate_caches()
         to_import: Dict[str, Tuple[str, str, Union[bool, str]]] = {}
 

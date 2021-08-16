@@ -1,18 +1,16 @@
 
 import datetime
+import json
 import os
 import time
-import dill
-import re
-from typing import Dict, List, Tuple
-import json
-from telethon.tl import functions, types
+from typing import Tuple
 
-from userbot import client
-from userbot.core.events import command
 from telethon.events import StopPropagation
-from userbot.plugins import plugins_data
+from telethon.tl import functions, types
+from userbot import client
+from userbot.core.events import NewMessage
 from userbot.core.helpers import _humanfriendly_seconds, get_chat_link
+from userbot.plugins import plugins_data
 
 plugin_category = "status"
 DEFAULT_UNMUTE_SETTINGS = types.InputPeerNotifySettings(
@@ -37,15 +35,16 @@ currently_afk_reason = (
     "🤍 **Al momento non sono disponibile, ti risponderò il prima possibile.\n\nMotivo: ** `{reason}`"
 )
 
+
 @client.createCommand(
     command=("approve [Utente]", plugin_category),
     outgoing=True, regex=r"approve(?: |$)(.+)?$"
 )
-async def approve(event: command.Event) -> None:
+async def approve(event: NewMessage.Event) -> None:
     users = await get_users(event)
     approved = []
     skipped = []
-    with open('database.json') as json_file:
+    with open('Database/database.json') as json_file:
         data_read = json.load(json_file)
     if users:
         for user in users:
@@ -57,8 +56,8 @@ async def approve(event: command.Event) -> None:
                 if user.id in data_read['approved_users']:
                     skipped.append(href)
                 else:
-                    with open('database.json', 'w') as f:
-                        approvedUsers  = data_read['approved_users']
+                    with open('Database/database.json', 'w') as f:
+                        approvedUsers = data_read['approved_users']
                         approvedUsername = data_read['approved_username']
                         approvedUsers.append(user.id)
                         approvedUsername.append('@'+user.username)
@@ -84,19 +83,19 @@ async def approve(event: command.Event) -> None:
     command=("disapprove [Utente]", plugin_category),
     outgoing=True, regex=r"(?:un|dis)approv(?:a|e)(?: |$)(.+)?$"
 )
-async def disapprove(event: command.Event) -> None:
+async def disapprove(event: NewMessage.Event) -> None:
     users = await get_users(event)
     disapproved = []
     skipped = []
-    with open('database.json') as json_file:
+    with open('Database/database.json') as json_file:
         data_read = json.load(json_file)
     if users:
         for user in users:
             href = await get_chat_link(user)
             if 'yourself' not in href:
                 if user.id in data_read['approved_users']:
-                    with open('database.json', 'w') as f:
-                        approvedUsers  = data_read['approved_users']
+                    with open('Database/database.json', 'w') as f:
+                        approvedUsers = data_read['approved_users']
                         approvedUsername = data_read['approved_username']
                         approvedUsers.remove(user.id)
                         approvedUsername.remove('@'+user.username)
@@ -124,8 +123,8 @@ async def disapprove(event: command.Event) -> None:
     command=("approved", plugin_category),
     outgoing=True, regex=r"approved$"
 )
-async def approved(event: command.Event) -> None:
-    with open('database.json') as json_file:
+async def approved(event: NewMessage.Event) -> None:
+    with open('Database/database.json') as json_file:
         data_read = json.load(json_file)
     if data_read['approved_username']:
         text = "**Utenti approvati:**\n"
@@ -135,7 +134,7 @@ async def approved(event: command.Event) -> None:
         await event.answer("`Ancora nessuno approvato..`")
 
 
-async def get_users(event: command.Event) -> types.User or None:
+async def get_users(event: NewMessage.Event) -> types.User or None:
     match = event.matches[0].group(1)
     users = []
     if match:
@@ -159,13 +158,14 @@ async def get_users(event: command.Event) -> types.User or None:
     command="afk",
     outgoing=True, regex="(p)?afk(?: |$)(.*)?$"
 )
-async def awayfromkeyboard(event: command.Event) -> None:
+async def awayfromkeyboard(event: NewMessage.Event) -> None:
     userbot_afk = os.environ.pop('userbot_afk', False)
     if userbot_afk == False:
         arg = event.matches[0].group(2)
         curtime = time.time().__str__()
         os.environ['userbot_afk'] = f"{curtime}/{event.chat_id}/{event.id}"
-        os.environ['userbot_afk_private'] = "True" if event.matches[0].group(1) else "False"
+        os.environ['userbot_afk_private'] = "True" if event.matches[0].group(
+            1) else "False"
         extra = await get_chat_link(event, event.id)
         log = ("afk", f"You just went AFK in {extra}!")
         if arg:
@@ -222,7 +222,8 @@ async def awayfromkeyboard(event: command.Event) -> None:
                 mentions = []
                 for i in range(len(value['mentions'])):
                     msg_id = value['mentions'][i]
-                    mentions.append(f"[{i + 1}](https://t.me/c/{key}/{msg_id})")
+                    mentions.append(
+                        f"[{i + 1}](https://t.me/c/{key}/{msg_id})")
                 msg += ',   '.join(mentions) + '.'
                 to_log.append(msg)
 
@@ -251,10 +252,9 @@ async def awayfromkeyboard(event: command.Event) -> None:
         AFK.sent.clear()
 
 
-
 @client.createCommand(incoming=True, edited=False)
-async def inc_listner(event: command.Event) -> None:
-    with open('database.json') as json_file:
+async def inc_listner(event: NewMessage.Event) -> None:
+    with open('Database/database.json') as json_file:
         data_read = json.load(json_file)
     sender = await event.get_sender()
     if event.from_scheduled or (isinstance(sender, types.User) and sender.bot):
@@ -296,7 +296,7 @@ async def inc_listner(event: command.Event) -> None:
 
 
 async def _append_msg(variable: dict, chat: int, event: int) -> None:
-    with open('database.json') as json_file:
+    with open('Database/database.json') as json_file:
         data_read = json.load(json_file)
     if chat in variable:
         variable[chat]['mentions'].append(event)

@@ -2,7 +2,7 @@
 
 from userbot import client
 from userbot.core.helpers import get_chat_link
-from userbot.core.events import command
+from userbot.core.events import NewMessage
 
 
 plugin_category = "user"
@@ -12,7 +12,7 @@ plugin_category = "user"
     command=("purge", "admin"), require_admin=True,
     outgoing=True, regex=r"purge(?: |$)(.*)"
 )
-async def purge(event: command.Event) -> None:
+async def purge(event: NewMessage.Event) -> None:
     if (
         (event.is_channel or event.is_group) and
         not (event.chat.creator or event.chat.admin_rights.delete_messages)
@@ -53,7 +53,7 @@ async def purge(event: command.Event) -> None:
     command=("del", plugin_category),
     outgoing=True, regex=r"del(?: |$)(.*)"
 )
-async def delme(event: command.Event) -> None:
+async def delme(event: NewMessage.Event) -> None:
 
     entity = await event.get_chat()
     _, kwargs = await client.parse_arguments(event.matches[0].group(1) or '')
@@ -81,7 +81,7 @@ async def delme(event: command.Event) -> None:
     )
 
 
-async def _offset(event: command.Event) -> int:
+async def _offset(event: NewMessage.Event) -> int:
     if event.reply_to_msg_id:
         return event.reply_to_msg_id - 1
     return event.message.id

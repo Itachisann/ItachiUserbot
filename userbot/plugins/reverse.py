@@ -16,7 +16,7 @@ from telethon.utils import get_extension
 
 from userbot import client
 from userbot.core.helpers import get_chat_link, is_ffmpeg_there
-from userbot.core.events import command
+from userbot.core.events import NewMessage
 
 
 opener = urllib.request.build_opener()
@@ -34,11 +34,11 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36"""
 @client.createCommand(
     command="reverse", outgoing=True, regex="(?:reversesearch|reverse)(?: |$)(\d*)"
 )
-async def search(event: command.Event) -> None:
+async def search(event: NewMessage.Event) -> None:
     reply = await event.get_reply_message()
     if reply and reply.media:
         ffmpeg = await is_ffmpeg_there()
-        await event.answer("`Sto scaricando il media :)`") 
+        await event.answer("`Sto scaricando il media :)`")
         ext = get_extension(reply.media)
         if reply.gif:
             ext = ".gif"
@@ -65,7 +65,7 @@ async def search(event: command.Event) -> None:
         else:
             photo = io.BytesIO()
             await client.download_media(reply, photo)
-        await event.answer("`Sto cercando risultati..`") 
+        await event.answer("`Sto cercando risultati..`")
     else:
         await event.answer("`Rispondi ad un media.`")
         return

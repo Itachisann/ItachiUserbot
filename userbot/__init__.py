@@ -1,18 +1,18 @@
 
 
+import sys
 import configparser
 import logging
 import os
 import pathlib
 import platform
-import sys
 
 from telethon.tl import types
 
-from .core.config_helper import resolve_env
 from .core.client import UserBotClient
+from .core.config_helper import resolve_env
+from .core.initializeDatabase import generateFile
 from .core.log_formatter import CustomFormatter, CustomMemoryHandler
-
 
 __version__ = "v0.1"
 root = pathlib.Path(__file__).parent.parent
@@ -31,6 +31,8 @@ loggingHandler = CustomMemoryHandler(600, target=streamHandler)
 ROOT_LOGGER.addHandler(loggingHandler)
 logging.captureWarnings(True)
 
+generateFile()
+sys.dont_write_bytecode = True
 if sys.platform.startswith('win'):
     from asyncio import ProactorEventLoop
     loop = ProactorEventLoop()
