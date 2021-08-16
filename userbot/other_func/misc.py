@@ -4,7 +4,7 @@ from telethon.tl import types
 
 from ..utils.client import UserBotClient
 from ..utils.helpers import get_chat_link
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 ChatBannedRights = {
     'until_date': 'Banned until:',
@@ -43,7 +43,7 @@ async def parse_admin_rights(AdminRights: types.ChatAdminRights) -> str:
     return '\n'.join(text)
 
 async def get_rights(
-    event: NewMessage.Event,
+    event: command.Event,
     change_info: bool = False,
     post_messages: bool = False,
     edit_messages: bool = False,

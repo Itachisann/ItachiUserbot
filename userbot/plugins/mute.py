@@ -7,7 +7,7 @@ import json
 from telethon.tl import types
 
 from userbot import client
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 from userbot.other_func.misc import get_rights
 from userbot.utils.helpers import get_chat_link
 import time
@@ -19,11 +19,11 @@ if not os.path.exists('muted.json'):
         data['muted_list'] = []
         f.write(json.dumps(data))
 
-@client.onMessage(
+@client.createCommand(
     command=("mute [Utente]", plugin_category),
     outgoing=True, regex=r"mute(?: |$)(.+)?$"
 )
-async def mute(event: NewMessage.Event) -> None: 
+async def mute(event: command.Event) -> None: 
     match = event.matches[0].group(1)
     users = await get_users(event)
     chatid = str(event.chat_id)
@@ -62,11 +62,11 @@ async def mute(event: NewMessage.Event) -> None:
         else:
             await event.edit('__💢 Non hai i permessi necessari per mutare in questo gruppo!__') 
 
-@client.onMessage(
+@client.createCommand(
     command=("unmute [Utente]", plugin_category),
     outgoing=True, regex=r"unmute(?: |$)(.+)?$"
 )
-async def unmute(event: NewMessage.Event) -> None: 
+async def unmute(event: command.Event) -> None: 
     match = event.matches[0].group(1)
     users = await get_users(event)
     chatid = str(event.chat_id)
@@ -102,7 +102,7 @@ async def unmute(event: NewMessage.Event) -> None:
             await event.edit('__💢 Non hai i permessi necessari per smutare in questo gruppo!__') 
 
 
-async def get_users(event: NewMessage.Event) -> types.User or None:
+async def get_users(event: command.Event) -> types.User or None:
     match = event.matches[0].group(1)
     users = []
     if match:
@@ -121,8 +121,8 @@ async def get_users(event: NewMessage.Event) -> types.User or None:
         users = [await reply.get_sender()]
     return users  
 
-@client.onMessage(incoming=True, edited=False)
-async def listner(event: NewMessage.Event) -> None: 
+@client.createCommand(incoming=True, edited=False)
+async def listner(event: command.Event) -> None: 
     chat_id = str(event.chat_id)
     with open('muted.json', encoding="utf8") as json_file:
         data_read = json.load(json_file)

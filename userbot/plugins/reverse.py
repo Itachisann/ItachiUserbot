@@ -16,7 +16,7 @@ from telethon.utils import get_extension
 
 from userbot import client
 from userbot.utils.helpers import get_chat_link, is_ffmpeg_there
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 
 opener = urllib.request.build_opener()
@@ -31,10 +31,10 @@ heavy_ua2 = """Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36"""
 
 
-@client.onMessage(
+@client.createCommand(
     command="reverse", outgoing=True, regex="(?:reversesearch|reverse)(?: |$)(\d*)"
 )
-async def search(event: NewMessage.Event) -> None:
+async def search(event: command.Event) -> None:
     reply = await event.get_reply_message()
     if reply and reply.media:
         ffmpeg = await is_ffmpeg_there()

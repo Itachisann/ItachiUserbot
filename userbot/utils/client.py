@@ -13,7 +13,7 @@ from telethon.tl import types
 from .FastTelethon import download_file, upload_file
 from .parser import parse_arguments
 from .pluginManager import PluginManager
-from .events import MessageEdited, NewMessage
+from .events import MessageEdited, command
 from .custom import answer, resanswer
 
 
@@ -48,7 +48,7 @@ class UserBotClient(TelegramClient):
     running_processes: dict = {}
     version: int = 0
 
-    def onMessage(
+    def createCommand(
         self: TelegramClient,
         builtin: bool = False,
         command: str or tuple = None,
@@ -62,7 +62,7 @@ class UserBotClient(TelegramClient):
         kwargs.setdefault('forwards', False)
 
         def wrapper(func: callable) -> callable:
-            events.register(NewMessage(**kwargs))(func)
+            events.register(command(**kwargs))(func)
 
             if edited:
                 events.register(MessageEdited(**kwargs))(func)

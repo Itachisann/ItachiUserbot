@@ -10,7 +10,7 @@ from telethon.tl import functions
 
 from userbot import client
 from userbot.utils.helpers import get_chat_link, format_speed
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 
 plugin_category = "www"
@@ -27,11 +27,11 @@ upload = "`Upload: %0.2f %s%s/s`"
 
 
 
-@client.onMessage(
+@client.createCommand(
     command=("speedtest", plugin_category),
     outgoing=True, regex=r"speedtest(?: |$)(bit|byte)?s?$"
 )
-async def speedtest(event: NewMessage.Event) -> None:
+async def speedtest(event: command.Event) -> None:
     unit = ("bit", 1)
     arg = event.matches[0].group(1)
     if arg and arg.lower() == "byte":

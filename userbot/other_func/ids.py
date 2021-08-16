@@ -5,13 +5,13 @@ from typing import Tuple, Union
 
 from telethon.tl import types
 
-from ..utils.events import NewMessage
+from ..utils.events import command
 
 
 LOGGER = logging.getLogger(__name__)
 
 
-async def get_user_from_msg(event: NewMessage.Event) -> Union[int, str, None]:
+async def get_user_from_msg(event: command.Event) -> Union[int, str, None]:
     user = None
     match = event.matches[0].group(1)
 
@@ -37,7 +37,7 @@ async def get_user_from_msg(event: NewMessage.Event) -> Union[int, str, None]:
     return user
 
 
-async def get_entity_from_msg(event: NewMessage.Event) -> Tuple[
+async def get_entity_from_msg(event: command.Event) -> Tuple[
     Union[None, types.User], Union[None, bool, str], Union[None, bool, str]
 ]:
     exception = False

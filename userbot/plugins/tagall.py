@@ -1,5 +1,5 @@
 from userbot import client
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 from telethon.utils import get_display_name
 import requests
 from bs4 import BeautifulSoup
@@ -11,11 +11,11 @@ import os
 from re import findall
 plugin_category = 'tagall'
 
-@client.onMessage(
+@client.createCommand(
     command=("tagall", plugin_category),
     outgoing=True,regex=r"tagall(?: |$)(.*)"
 )
-async def tagall(event: NewMessage.Event) -> None:
+async def tagall(event: command.Event) -> None:
     if event.is_group or event.is_channel:
         await event.delete()
         if event.fwd_from:

@@ -8,17 +8,17 @@ from telethon.tl import functions, types
 
 from userbot import client, LOGGER
 from userbot.other_func.parser import Parser
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 
 plugin_category = "user"
 
 
-@client.onMessage(
+@client.createCommand(
     command=("info [Utente]", plugin_category),
     outgoing=True, regex=r"info(?: |$|\n)([\s\S]*)"
 )
-async def info(event: NewMessage.Event) -> None:
+async def info(event: command.Event) -> None:
     match = event.matches[0].group(1)
     entities = []
     if match:
@@ -85,11 +85,11 @@ async def info(event: NewMessage.Event) -> None:
         await event.answer("__Something went wrong!__", self_destruct=2)
 
 
-@client.onMessage(
+@client.createCommand(
     command=("bio [Bio]", plugin_category),
     outgoing=True, regex="bio(?: |$)(.*)$"
 )
-async def bio(event: NewMessage.Event) -> None:
+async def bio(event: command.Event) -> None:
     match = event.matches[0].group(1)
     about = (await client(functions.users.GetFullUserRequest("self"))).about
     if not match:
@@ -109,11 +109,11 @@ async def bio(event: NewMessage.Event) -> None:
         await event.answer("`La bio che vuoi impostare è troppo lunga.`")
 
 
-@client.onMessage(
+@client.createCommand(
     command=("username [Username]", plugin_category),
     outgoing=True, regex="username(?: |$)(.*)$"
 )
-async def username(event: NewMessage.Event) -> None:
+async def username(event: command.Event) -> None:
     match = event.matches[0].group(1)
     u1 = (await client.get_me()).username
     if not match:
@@ -137,11 +137,11 @@ async def username(event: NewMessage.Event) -> None:
         await event.answer("`Username non modificato.`")
 
 
-@client.onMessage(
+@client.createCommand(
     command=("on", plugin_category),
     outgoing=True, regex="on(?: |$)(.*)$"
 )
-async def on(event: NewMessage.Event) -> None:
+async def on(event: command.Event) -> None:
     string = '[Online] ' 
     me = await client.get_me()
     if string not in me.first_name:
@@ -165,11 +165,11 @@ async def on(event: NewMessage.Event) -> None:
 
 
 
-@client.onMessage(
+@client.createCommand(
     command=("off", plugin_category),
     outgoing=True, regex="off(?: |$)(.*)$"
 )
-async def off(event: NewMessage.Event) -> None:
+async def off(event: command.Event) -> None:
     string = '[Offline] ' 
     me = await client.get_me()
     if '[Online] ' in me.first_name:
@@ -186,11 +186,11 @@ async def off(event: NewMessage.Event) -> None:
             await event.answer(f'```{await client.get_traceback(e)}```')
 
 
-@client.onMessage(
+@client.createCommand(
     command=("pfp", plugin_category),
     outgoing=True, regex="pfp$"
 )
-async def pfp(event: NewMessage.Event) -> None:
+async def pfp(event: command.Event) -> None:
     reply = await event.get_reply_message()
     if not reply:
         photo = await client(functions.users.GetFullUserRequest("self"))
@@ -254,11 +254,11 @@ async def pfp(event: NewMessage.Event) -> None:
         await event.answer("`Questa foto non è supportata.`")
 
 
-@client.onMessage(
+@client.createCommand(
     command=("id [Utente]", plugin_category),
     outgoing=True, regex=r"id(?: |$|\n)([\s\S]*)"
 )
-async def whichid(event: NewMessage.Event) -> None:
+async def whichid(event: command.Event) -> None:
     match = event.matches[0].group(1)
     text = ""
     if not match and not event.reply_to_msg_id:

@@ -10,7 +10,7 @@ from telethon.tl import functions, types
 
 from userbot import client
 from userbot.utils.helpers import get_chat_link
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 from telethon.events import StopPropagation
 import time
 from userbot.plugins import plugins_data
@@ -48,11 +48,11 @@ currently_afk_reason = (
     "🤍 **Al momento non sono disponibile, ti risponderò il prima possibile.\n\nMotivo: ** `{reason}`"
 )
 
-@client.onMessage(
+@client.createCommand(
     command=("approve [Utente]", plugin_category),
     outgoing=True, regex=r"approve(?: |$)(.+)?$"
 )
-async def approve(event: NewMessage.Event) -> None:
+async def approve(event: command.Event) -> None:
     users = await get_users(event)
     approved = []
     skipped = []
@@ -91,11 +91,11 @@ async def approve(event: NewMessage.Event) -> None:
         await event.answer(text)
 
 
-@client.onMessage(
+@client.createCommand(
     command=("disapprove [Utente]", plugin_category),
     outgoing=True, regex=r"(?:un|dis)approv(?:a|e)(?: |$)(.+)?$"
 )
-async def disapprove(event: NewMessage.Event) -> None:
+async def disapprove(event: command.Event) -> None:
     users = await get_users(event)
     disapproved = []
     skipped = []
@@ -131,11 +131,11 @@ async def disapprove(event: NewMessage.Event) -> None:
         await event.answer(text)
 
 
-@client.onMessage(
+@client.createCommand(
     command=("approved", plugin_category),
     outgoing=True, regex=r"approved$"
 )
-async def approved(event: NewMessage.Event) -> None:
+async def approved(event: command.Event) -> None:
     with open('database.json') as json_file:
         data_read = json.load(json_file)
     if data_read['approved_username']:
@@ -146,7 +146,7 @@ async def approved(event: NewMessage.Event) -> None:
         await event.answer("`Ancora nessuno approvato..`")
 
 
-async def get_users(event: NewMessage.Event) -> types.User or None:
+async def get_users(event: command.Event) -> types.User or None:
     match = event.matches[0].group(1)
     users = []
     if match:
@@ -166,11 +166,11 @@ async def get_users(event: NewMessage.Event) -> types.User or None:
     return users
 
 
-@client.onMessage(
+@client.createCommand(
     command="afk",
     outgoing=True, regex="(p)?afk(?: |$)(.*)?$"
 )
-async def awayfromkeyboard(event: NewMessage.Event) -> None:
+async def awayfromkeyboard(event: command.Event) -> None:
     userbot_afk = os.environ.pop('userbot_afk', False)
     if userbot_afk == False:
         arg = event.matches[0].group(2)
@@ -263,8 +263,8 @@ async def awayfromkeyboard(event: NewMessage.Event) -> None:
 
 
 
-@client.onMessage(incoming=True, edited=False)
-async def inc_listner(event: NewMessage.Event) -> None:
+@client.createCommand(incoming=True, edited=False)
+async def inc_listner(event: command.Event) -> None:
     with open('database.json') as json_file:
         data_read = json.load(json_file)
     sender = await event.get_sender()

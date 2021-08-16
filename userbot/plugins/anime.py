@@ -4,14 +4,14 @@ from urllib.request import urlopen
 import json
 import os
 from userbot import client
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 plugin_category = 'anime'
-@client.onMessage(
+@client.createCommand(
     command=("waifu", plugin_category),
     outgoing=True, regex="(?:waifu|randomwaifu)(?: |$)(.+)?$"
 )
-async def animepic(event: NewMessage.Event) -> None: 
+async def animepic(event: command.Event) -> None: 
     if event.fwd_from:
         return
     await event.answer("__Sto ottenendo la tua waifu...__")    

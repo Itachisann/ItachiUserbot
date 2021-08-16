@@ -14,7 +14,7 @@ from telethon.tl import types
 from telethon.utils import get_display_name
 
 from .client import UserBotClient
-from .events import NewMessage
+from .events import command
 from userbot.plugins import plugins_data
 
 
@@ -67,7 +67,7 @@ def restarter(client: UserBotClient) -> None:
         os.execle(executable, *args, os.environ)
 
 
-async def restart(event: NewMessage.Event) -> None:
+async def restart(event: command.Event) -> None:
     event.client.reconnect = False
     restart_message = f"{event.chat_id}/{event.message.id}"
     os.environ['userbot_restarted'] = restart_message
@@ -109,7 +109,7 @@ async def _human_friendly_timedelta(timedelta: str) -> str:
 
 
 async def get_chat_link(
-    arg: Union[types.User, types.Chat, types.Channel, NewMessage.Event],
+    arg: Union[types.User, types.Chat, types.Channel, command.Event],
     reply=None
 ) -> str:
     if isinstance(arg, (types.User, types.Chat, types.Channel)):

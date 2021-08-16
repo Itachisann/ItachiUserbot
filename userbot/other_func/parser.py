@@ -4,7 +4,7 @@ from typing import Union
 from telethon.tl import types
 from telethon.utils import get_peer_id
 
-from ..utils.events import NewMessage
+from ..utils.events import command
 
 
 class Parser:
@@ -12,7 +12,7 @@ class Parser:
     @staticmethod
     async def parse_full_user(
         usr_obj: types.UserFull,
-        event: NewMessage.Event
+        event: command.Event
     ) -> str:
         user = usr_obj.user
 
@@ -59,7 +59,7 @@ class Parser:
     @staticmethod
     async def parse_full_chat(
         chat_obj: Union[types.ChatFull, types.ChannelFull],
-        event: NewMessage.Event
+        event: command.Event
     ) -> str:
         """Human-friendly string of a Chat/Channel obj's attributes"""
         full_chat = chat_obj.full_chat

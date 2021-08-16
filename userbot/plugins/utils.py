@@ -9,16 +9,16 @@ from telethon.tl import functions, types
 
 from userbot import client, LOGGER
 from userbot.other_func.parser import Parser
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 plugin_category = "utils"
 
-@client.onMessage(
+@client.createCommand(
     command=("spam [Numero messaggi] [Messaggio]", plugin_category),
     outgoing=True, regex=r"spam(?: |$|\n)([\s\S]*)"
 )
 
-async def spam(event: NewMessage.Event) -> None:
+async def spam(event: command.Event) -> None:
     arg = event.matches[0].group(1)
     arg_ = arg.split(" ")
     if arg:
@@ -36,12 +36,12 @@ async def spam(event: NewMessage.Event) -> None:
     else:
         await event.edit('**❗️ Utilizzo corretto:** `.spam [Numero messaggi] [Messaggio]`')                        
                     
-@client.onMessage(
+@client.createCommand(
     command=("pin", plugin_category),
     outgoing=True, regex=r"pin(?: |$|\n)([\s\S]*)"
 )
 
-async def pin(event: NewMessage.Event) -> None:
+async def pin(event: command.Event) -> None:
     if event.fwd_from:
         return
     if event.message.reply_to_msg_id is not None:
@@ -59,11 +59,11 @@ async def pin(event: NewMessage.Event) -> None:
         await event.edit("__Rispondi al messaggio da pinnare.__")                    
 
 
-@client.onMessage(
+@client.createCommand(
     command=("type [Messaggio]", plugin_category),
     outgoing=True, regex=r"type(?: |$|\n)([\s\S]*)"
 )
-async def typechar(event: NewMessage.Event) -> None:
+async def typechar(event: command.Event) -> None:
     if event.fwd_from:
         return
     arg = event.matches[0].group(1)
@@ -92,11 +92,11 @@ async def typechar(event: NewMessage.Event) -> None:
 
 
     
-@client.onMessage(
+@client.createCommand(
     command=("hack", plugin_category),
     outgoing=True, regex=r"hack(?: |$|\n)([\s\S]*)"
 )
-async def hack(event: NewMessage.Event) -> None:
+async def hack(event: command.Event) -> None:
     if event.fwd_from:
         return
     animation_interval = 1
@@ -117,11 +117,11 @@ async def hack(event: NewMessage.Event) -> None:
         await asyncio.sleep(animation_interval)
         await event.edit(animation_chars[i % 10])
         
-@client.onMessage(
+@client.createCommand(
     command=("tr [Messaggio]", plugin_category),
     outgoing=True, regex=r"tr(?: |$|\n)([\s\S]*)"
 )
-async def translate(event: NewMessage.Event) -> None:
+async def translate(event: command.Event) -> None:
     translator = Translator()
     if event.reply_to_msg_id:
         r_message = await event.get_reply_message()
@@ -143,11 +143,11 @@ async def translate(event: NewMessage.Event) -> None:
     else:
             await event.edit(f"`Questo testo è già in italiano..`")
             
-@client.onMessage(
+@client.createCommand(
     command=("ph", plugin_category),
     outgoing=True, regex=r"ph(?: |$|\n)([\s\S]*)"
 )
-async def ph(event: NewMessage.Event) -> None:
+async def ph(event: command.Event) -> None:
     await event.edit(
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n"
     "⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿\n"
@@ -174,22 +174,22 @@ async def ph(event: NewMessage.Event) -> None:
     "⣿⣿⣿⣿⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿\n"
     "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n")
     
-@client.onMessage(
+@client.createCommand(
     command=("tspam [Messaggio]", plugin_category),
     outgoing=True, regex=r"tspam(?: |$|\n)([\s\S]*)"
 )
-async def tspam(event: NewMessage.Event) -> None:
+async def tspam(event: command.Event) -> None:
     tspam = event.matches[0].group(1)
     message = tspam.replace(" ", "")
     for letter in message:
         await event.respond(letter)
     await event.delete()
     
-@client.onMessage(
+@client.createCommand(
     command=("timer [Tempo in minuti] [Messaggio]", plugin_category),
     outgoing=True, regex=r"timer(?: |$|\n)([\s\S]*)"
 )
-async def timer(event: NewMessage.Event) -> None:
+async def timer(event: command.Event) -> None:
     message = event.matches[0].group(1)
     text = message.split(" ")
     if message:

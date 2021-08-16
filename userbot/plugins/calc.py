@@ -7,17 +7,17 @@ from meval import meval
 
 from userbot import client
 from userbot.utils.helpers import get_chat_link
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 
 plugin_category = "calculator"
 
 
-@client.onMessage(
+@client.createCommand(
     command=("calc [Operazioni]", plugin_category),
     outgoing=True, regex=r"calc(?: |$|\n)([\s\S]*)"
 )
-async def calc(event: NewMessage.Event) -> None:
+async def calc(event: command.Event) -> None:
     expression = event.matches[0].group(1).strip()
     reply = await event.get_reply_message()
     if not expression:

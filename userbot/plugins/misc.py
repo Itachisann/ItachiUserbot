@@ -13,7 +13,7 @@ from telethon.tl import functions, types
 from userbot import client, LOGGER
 from userbot.other_func import misc
 from userbot.utils.helpers import get_chat_link
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 
 plugin_category = "misc"
@@ -43,7 +43,7 @@ def removebg_post(API_KEY: str, media: bytes or str):
 
 
 
-async def rmbg(event: NewMessage.Event) -> None:
+async def rmbg(event: command.Event) -> None:
     """
     Remove the background from an image or sticker.
 
@@ -124,7 +124,7 @@ async def rmbg(event: NewMessage.Event) -> None:
 
 
 
-async def resolver(event: NewMessage.Event) -> None:
+async def resolver(event: command.Event) -> None:
     """
     Resolve an invite link or a username.
 

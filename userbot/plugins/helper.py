@@ -4,18 +4,18 @@ import re
 from typing import Tuple
 
 from userbot import client
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 
 plugin_category: str = "helper"
 split_exp: re.Pattern = re.compile(r'\||\/')
 
 
-@client.onMessage(
+@client.createCommand(
     command=("help", plugin_category), builtin=True,
     outgoing=True, regex=r"help(?: |$)(\w*)(?: |$)(dev|details|info)?"
 )
-async def helper(event: NewMessage.Event) -> None:
+async def helper(event: command.Event) -> None:
     arg = event.matches[0].group(1)
     enabled, senabled = await solve_commands(client.commands)
     if arg == '1' or not arg:

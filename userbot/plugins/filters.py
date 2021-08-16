@@ -6,7 +6,7 @@ from typing import Dict, List, Tuple
 import json
 
 from userbot import client
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 
 plugin_category = 'filter'
 if not os.path.exists('filters.json'):
@@ -14,11 +14,11 @@ if not os.path.exists('filters.json'):
         data = {}
         f.write(json.dumps(data))
         
-@client.onMessage(
+@client.createCommand(
     command=("addfilter [Filtro] [Testo]", plugin_category),
     outgoing=True, regex=r"addfilter(?: |$)(.+)?$"
 )       
-async def addfilter(event: NewMessage.Event) -> None: 
+async def addfilter(event: command.Event) -> None: 
     match = event.matches[0].group(1)
     if match:
         arg = match.split(" ")
@@ -43,11 +43,11 @@ async def addfilter(event: NewMessage.Event) -> None:
         await event.edit("**❗️ Utilizzo corretto:** `.addfilter [Filtro] [Testo]`")               
            
            
-@client.onMessage(
+@client.createCommand(
     command=("delfilter [Filtro]", plugin_category),
     outgoing=True, regex=r"(?:delfilter|unfilter)(?: |$)(.+)?$"
 )       
-async def delfilter(event: NewMessage.Event) -> None: 
+async def delfilter(event: command.Event) -> None: 
     match = event.matches[0].group(1)
     arg = match.split(" ")
     if match:
@@ -66,8 +66,8 @@ async def delfilter(event: NewMessage.Event) -> None:
         await event.edit(f"**❗️ Devi inserire il nome del filtro da eliminare!**") 
                 
            
-@client.onMessage(outgoing=True, edited=False)
-async def listner(event: NewMessage.Event) -> None: 
+@client.createCommand(outgoing=True, edited=False)
+async def listner(event: command.Event) -> None: 
     with open('filters.json', encoding="utf8") as json_file:
         data_read = json.load(json_file)
     text = event.message.text
@@ -76,11 +76,11 @@ async def listner(event: NewMessage.Event) -> None:
         await event.delete()
         await event.respond(data_read[arg[0]]) 
     
-@client.onMessage(
+@client.createCommand(
     command=("filterlist", plugin_category),
     outgoing=True, regex=r"(?:filterlist|filters)(?: |$)(.+)?$"
 )       
-async def filterlist(event: NewMessage.Event) -> None: 
+async def filterlist(event: command.Event) -> None: 
     with open('filters.json') as json_file:
         data_read = json.load(json_file)
     if len(data_read) != 0:

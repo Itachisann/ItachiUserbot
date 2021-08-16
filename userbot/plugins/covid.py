@@ -2,17 +2,17 @@
 from covid import Covid
 
 from userbot import client
-from userbot.utils.events import NewMessage
+from userbot.utils.events import command
 from googletrans import Translator
 
 plugin_category = "pandemic"
 covid_str = f"`Casi totali registrati:`  **%(confirmed)s**\n`Positivi attuali:`  **%(active)s**\n`Morti giornalieri:`  **%(new_deaths)s**\n`Nuovi casi:`  **%(new_cases)s**"
 
-@client.onMessage(
+@client.createCommand(
     command="covid (Nazione)",
     outgoing=True, regex="(?:covid|corona)(?: |$)(.*)"
 )
-async def covid19(event: NewMessage.Event) -> None:
+async def covid19(event: command.Event) -> None:
     await event.edit('__Sto ottenendo le informazioni..__')
     covid = Covid(source="worldometers")
     match = event.matches[0].group(1)

@@ -25,8 +25,8 @@ custom.Message.resanswer = resanswer
 
 
 @events.common.name_inner_event
-class NewMessage(events.NewMessage):
-    """Custom NewMessage event inheriting the default Telethon event"""
+class command(events.command):
+    """Custom command event inheriting the default Telethon event"""
 
     def __init__(
         self,
@@ -141,8 +141,8 @@ class NewMessage(events.NewMessage):
 
 
 @events.common.name_inner_event
-class MessageEdited(NewMessage):
-    """Custom MessageEdited event inheriting the custom NewMessage event"""
+class MessageEdited(command):
+    """Custom MessageEdited event inheriting the custom command event"""
 
     @classmethod
     def build(cls, update, others=None, self_id=None):
@@ -162,6 +162,6 @@ class MessageEdited(NewMessage):
                 return
             return cls.Event(update.message)
 
-    class Event(NewMessage.Event):
-        """Overriding the default Event which inherits Telethon's NewMessage"""
+    class Event(command.Event):
+        """Overriding the default Event which inherits Telethon's command"""
         pass  # Required if we want a different name for it
