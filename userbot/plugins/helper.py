@@ -68,6 +68,8 @@ async def helper(event: NewMessage.Event) -> None:
 
 </i><code>.ph</code> | <i>Abbiamo capito..
 
+</i><code>.pin</code> | <i>Tramite questo comando è possibile pinnare un messaggio in un gruppo.
+
 </i><code>.ping</code> | <i>Tramite questo comando è possibile visualizzare il proprio ping.
 
 </i><code>.purge</code> | <i>Tramite questo comando è possibile eliminare tutti i messaggi rispondendo al messaggio da cui iniziare la pulizia.

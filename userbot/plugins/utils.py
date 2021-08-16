@@ -36,7 +36,27 @@ async def spam(event: NewMessage.Event) -> None:
     else:
         await event.edit('**❗️ Utilizzo corretto:** `.spam [Numero messaggi] [Messaggio]`')                        
                     
-                    
+@client.onMessage(
+    command=("pin", plugin_category),
+    outgoing=True, regex=r"pin(?: |$|\n)([\s\S]*)"
+)
+
+async def pin(event: NewMessage.Event) -> None:
+    if event.fwd_from:
+        return
+    if event.message.reply_to_msg_id is not None:
+        try:
+            await client(functions.messages.UpdatePinnedMessageRequest(
+                event.chat_id,
+                event.message.reply_to_msg_id,
+                silent=False
+            ))
+        except Exception as e:
+            await event.edit(str(e))
+        else:
+            await event.delete()
+    else:
+        await event.edit("__Rispondi al messaggio da pinnare.__")                    
 
 
 @client.onMessage(
