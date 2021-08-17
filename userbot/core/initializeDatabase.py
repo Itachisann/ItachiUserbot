@@ -21,8 +21,8 @@ import os
 
 
 def generateFile():
-    if not os.path.exists('Database'):
-        os.mkdir('Database')
+    if not os.path.exists('userbot/database'):
+        os.mkdir('userbot/database')
 
     if not os.path.exists('userbot/database/filters.json'):
         with open('userbot/database/filters.json', 'w', encoding="utf8") as f:
