@@ -32,7 +32,7 @@ async def addfilter(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     if match:
         arg = match.split(" ")
-        with open('userbot/databasefilters.json', encoding="utf8") as json_file:
+        with open('userbot/database/filters.json', encoding="utf8") as json_file:
             data_read = json.load(json_file)
         if len(arg[0]) > 1:
             if len(arg[1]) > 1:
@@ -40,7 +40,7 @@ async def addfilter(event: NewMessage.Event) -> None:
                 if command not in data_read:
                     filter_text = match.partition(arg[0])[2]
                     filter_text = filter_text.partition(" ")[2]
-                    with open('userbot/databasefilters.json', 'w', encoding='utf8') as f:
+                    with open('userbot/database/filters.json', 'w', encoding='utf8') as f:
                         data = data_read
                         data[command] = filter_text
                         f.write(json.dumps(data, ensure_ascii=False))
@@ -61,11 +61,11 @@ async def delfilter(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     arg = match.split(" ")
     if match:
-        with open('userbot/databasefilters.json', encoding="utf8") as json_file:
+        with open('userbot/database/filters.json', encoding="utf8") as json_file:
             data_read = json.load(json_file)
         command = arg[0]
         if command in data_read:
-            with open('userbot/databasefilters.json', 'w') as f:
+            with open('userbot/database/filters.json', 'w') as f:
                 data = data_read
                 del data[command]
                 f.write(json.dumps(data))
@@ -78,7 +78,7 @@ async def delfilter(event: NewMessage.Event) -> None:
 
 @client.createCommand(outgoing=True, edited=False)
 async def listner(event: NewMessage.Event) -> None:
-    with open('userbot/databasefilters.json', encoding="utf8") as json_file:
+    with open('userbot/database/filters.json', encoding="utf8") as json_file:
         data_read = json.load(json_file)
     text = event.message.text
     arg = text.split(" ")
@@ -92,7 +92,7 @@ async def listner(event: NewMessage.Event) -> None:
     outgoing=True, regex=r"(?:filterlist|filters)(?: |$)(.+)?$"
 )
 async def filterlist(event: NewMessage.Event) -> None:
-    with open('userbot/databasefilters.json') as json_file:
+    with open('userbot/database/filters.json') as json_file:
         data_read = json.load(json_file)
     if len(data_read) != 0:
         output = "**📯 Filtri attivi:**\n\n"
