@@ -38,19 +38,21 @@ async def helper(event: NewMessage.Event) -> None:
         text += "\n".join([f'<code>.{name}</code>' for name in sorted(enabled)]) + \
             "\n\n<i>Scrivi .help 2 per vedere le funzioni dei comandi!</i>"
     elif arg == '2':
-        text = """<b>— Comando | Funzione</b> —
+        text = """<b>— Comando | Funzione —</b>
 
-<code>.addfilter</code> | <i>Tramite questo comando è possibile creare dei  filtri che restano in modo permanente.
+<code>.addfilter</code> | <i>Tramite questo comando è possibile creare dei filtri che restano in modo permanente.
 
 </i><code>.addsticker</code> | <i>Tramite questo comando è possibile trasformare un sticker, o una foto in uno sticker che verrà aggiunto nel vostro pack.
 
-</i><code>.afk</code> | <i>Tramite questo comando </i>è possibile andare AFK o tornare non AFK. Andando AFK riceverai le notifiche solo di chi è approvato.
+</i><code>.afk</code> | <i>Tramite questo comando è possibile andare AFK o tornare non AFK. Andando AFK riceverai le notifiche solo di chi è approvato.
 
-<code>.approve</code> | Tramite questo comando puoi approvare un utente, che potrà scriverti quando sei AFK.
+</i><code>.anime</code> | <i>Tramite questo comando è possibile ottenere info di anime.
 
-<code>.approved</code> | <i>Tramite questo comando è</i> possibile vedere la lista di approvati, che possono scriverti quando sei AFK.
+</i><code>.approve</code> | Tramite questo comando puoi approvare un utente, che potrà scriverti quando sei AFK.
 
-<code>.bio</code> | <i>Tramite questo comando è possibile visualizza la propria bio o cambiarla.
+</i><code>.approved</code> | <i>Tramite questo comando è possibile vedere la lista di approvati, che possono scriverti quando sei AFK.
+
+</i><code>.bio</code> | <i>Tramite questo comando è possibile visualizza la propria bio o cambiarla.
 
 </i><code>.calc </code>| <i>Tramite questo comando è possibile eseguire operazioni matematiche.
 
@@ -71,6 +73,8 @@ async def helper(event: NewMessage.Event) -> None:
 </i><code>.id</code> | <i>Tramite questo comando è possibile ottenere l'ID di un utente.
 
 </i><code>.info</code> | <i>Tramite questo comando è possibile ottenere le info di un utente
+
+</i><code>.manga</code> | <i>Tramite questo comando è possibile ottenere info di manga.
 
 </i><code>.mute</code> | <i>Tramite questo comando è possibile mutare un utente in privato, o in un gruppo se si dispone dei permessi adatti.
 

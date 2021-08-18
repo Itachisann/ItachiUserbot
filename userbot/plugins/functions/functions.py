@@ -49,3 +49,18 @@ async def get_rights(
             required_rights.append(getattr(chat.admin_rights, right, False))
 
     return all(required_rights)
+
+
+def time_formatter(milliseconds: int) -> str:
+    seconds, milliseconds = divmod(int(milliseconds), 1000)
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    days, hours = divmod(hours, 24)
+    tmp = (
+        ((str(days) + " giorni, ") if days else "")
+        + ((str(hours) + " ore, ") if hours else "")
+        + ((str(minutes) + " minuti, ") if minutes else "")
+        + ((str(seconds) + " secondi, ") if seconds else "")
+        + ((str(milliseconds) + " millisecondi, ") if milliseconds else "")
+    )
+    return tmp[:-2]
