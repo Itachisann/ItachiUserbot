@@ -48,7 +48,7 @@ async def helper(event: NewMessage.Event) -> None:
 
 </i><code>.anime</code> | <i>Tramite questo comando è possibile ottenere info di anime.
 
-</i><code>.approve</code> | Tramite questo comando puoi approvare un utente, che potrà scriverti quando sei AFK.
+</i><code>.approve</code> | <i>Tramite questo comando puoi approvare un utente, che potrà scriverti quando sei AFK.
 
 </i><code>.approved</code> | <i>Tramite questo comando è possibile vedere la lista di approvati, che possono scriverti quando sei AFK.
 
@@ -95,6 +95,8 @@ async def helper(event: NewMessage.Event) -> None:
 </i><code>.purge</code> | <i>Tramite questo comando è possibile eliminare tutti i messaggi rispondendo al messaggio da cui iniziare la pulizia.
 
 </i><code>.restart</code> | <i>Tramite questo comando è possibile riavviare l'userbot.
+
+</i><code>.reverse</code> | <i>Tramite questo comando è possibile eseguire una ricerca tramite immagine.
 
 </i><code>.spam</code> | <i>Tramite questo comando è possibile spammare un messaggio quante volte si vuole.
 
