@@ -38,7 +38,7 @@ async def manga(event: NewMessage.Event) -> None:
         return
     match = event.matches[0].group(1)
     if match:
-        await event.edit("__Sto cercando..attendi qualche istante...__")
+        await event.edit(f"__Sto cercando informazioni sul manga `{match}`..attendi qualche istante...__")
         reply_to_id = event.message.id
         if event.reply_to_msg_id:
             reply_to_id = event.reply_to_msg_id
@@ -72,6 +72,7 @@ async def manga(event: NewMessage.Event) -> None:
                 ms_g += f"\n**Stato** - `{stato}`"
             if score:
                 ms_g += f"\n**Punteggio** - `{score}%`"
+            await event.edit("__Dati raccolti..Sto costruendo il messaggio__")
             ms_g += "\n**Genere** - "
             for x in json.get("genres", []):
                 genere = translator.translate(x, dest='it')
@@ -89,7 +90,6 @@ async def manga(event: NewMessage.Event) -> None:
                 .replace("<i>", "")
                 .replace("</i>", "")
             )
-            await event.edit("__Dati raccolti..Sto costruendo il messaggio__")
             if image:
                 try:
                     await event.client.send_file(
@@ -101,7 +101,7 @@ async def manga(event: NewMessage.Event) -> None:
                     )
                     await event.delete()
                 except BaseException:
-                    pass
+                    await event.edit(ms_g, link_preview=True)
             else:
                 await event.edit(ms_g)
     else:
@@ -115,8 +115,11 @@ async def manga(event: NewMessage.Event) -> None:
 async def anilist(event: NewMessage.Event) -> None:
     match = event.matches[0].group(1)
     if match:
-        await event.edit("__Sto cercando..attendi qualche istante...__")
+        await event.edit(f"__Sto cercando informazioni sull'anime `{match}`..attendi qualche istante...__")
         variables = {"search": match}
+        api = await callAPI(match)
+        js = await formatJSON(api, match)
+        await event.edit("__Dati raccolti..Sto costruendo il messaggio__")
         json = (
             requests.post(
                 url, json={"query": anime_query, "variables": variables})
@@ -124,9 +127,6 @@ async def anilist(event: NewMessage.Event) -> None:
             .get("Media", None)
         )
         image = json.get("bannerImage", False)
-        api = await callAPI(match)
-        js = await formatJSON(api, match)
-        await event.edit("__Dati raccolti..Sto costruendo il messaggio__")
         if image:
             try:
                 await event.client.send_file(
