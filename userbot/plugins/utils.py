@@ -17,7 +17,7 @@
 
 
 import asyncio
-
+import random
 from googletrans import Translator
 from telethon.tl import functions
 from userbot import LOGGER, client
@@ -219,3 +219,28 @@ async def timer(event: NewMessage.Event) -> None:
             await event.edit('__Devi inserire un tempo in minuti valido!__')
     else:
         await event.edit('**❗️ Utilizzo corretto:** `.timer [Tempo in minuti] [Messaggio]`')
+
+
+@client.createCommand(
+    command=("random [Min.] [Max]", plugin_category),
+    outgoing=True, regex=r"random(?: |$|\n)([\s\S]*)"
+)
+async def timer(event: NewMessage.Event) -> None:
+    message = event.matches[0].group(1)
+    text = message.split(" ")
+    if message:
+        try:
+            if len(text[0]) >= 1:
+                value1 = int(text[0])
+                try:
+                    value2 = int(text[1])
+                    number = random.randint(value1, value2)
+                    await event.edit(f"**Numero generato**: `{str(number)}`")
+                except ValueError:
+                    await event.edit('__Devi inserire parametri validi!__')
+            else:
+                await event.edit("**❗️ Devi inserire il min. per generare un numero random!**")
+        except ValueError:
+            await event.edit('__Devi inserire parametri validi!__')
+    else:
+        await event.edit('**❗️ Utilizzo corretto:** `.random [Min.] [Max]`')
