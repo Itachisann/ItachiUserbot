@@ -207,16 +207,15 @@ async def timer(event: NewMessage.Event) -> None:
     text = message.split(" ")
     if message:
         try:
-            value = int(text[0])
-        except ValueError:
-            await event.edit('__Devi inserire un tempo in minuti valido!__')
-        if type(value) == int:
             if len(text[0]) > 1:
+                value = int(text[0])
                 await event.delete()
                 await asyncio.sleep(value * 60)
                 arg = message.partition(text[0])[2]
                 await event.respond(arg)
             else:
                 await event.edit("**❗️ Devi inserire il messaggio!**")
+        except ValueError:
+            await event.edit('__Devi inserire un tempo in minuti valido!__')
     else:
         await event.edit('**❗️ Utilizzo corretto:** `.timer [Tempo in minuti] [Messaggio]`')
