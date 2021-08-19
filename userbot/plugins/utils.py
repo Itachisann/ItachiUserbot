@@ -207,7 +207,7 @@ async def timer(event: NewMessage.Event) -> None:
     text = message.split(" ")
     if message:
         try:
-            if len(text[0]) > 1:
+            if len(text[0]) >= 1:
                 value = int(text[0])
                 await event.delete()
                 await asyncio.sleep(value * 60)
