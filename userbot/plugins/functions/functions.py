@@ -132,8 +132,13 @@ async def formatJSON(outData, search):
         if jsonData['duration'] == 60:
             durata = '1 ora'
         else:
-            durata = "{} ore, {} minuti".format(
-                str(ore).split('.')[0], minuti)
+            ore = str(ore).split('.')[0]
+            if ore == '1':
+                durata = "{} ora, {} minuti".format(
+                    ore, minuti)
+            else:
+                durata = "{} ora, {} minuti".format(
+                    ore, minuti)
     else:
         durata = f"{jsonData['duration']} minuti"
     msg += f"\n**• Durata**: `{durata}`\n\n"

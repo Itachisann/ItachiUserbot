@@ -140,6 +140,5 @@ async def anilist(event: NewMessage.Event) -> None:
                 await event.edit(js, link_preview=True)
         else:
             await event.edit(js, link_preview=True)
-        await event.delete()
     else:
         await event.edit("__Devi inserire il nome di un anime!__")
