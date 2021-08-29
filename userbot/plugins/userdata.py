@@ -97,7 +97,7 @@ async def info(event: NewMessage.Event) -> None:
         failedtext += ", ".join(f'`{u}`' for u in failed)
         await event.answer(failedtext)
     elif not (users or chats or channels):
-        await event.answer("__Something went wrong!__", self_destruct=2)
+        await event.answer("**Impossibile trovare:**", self_destruct=2)
 
 
 @client.createCommand(
@@ -293,16 +293,34 @@ async def whichid(event: NewMessage.Event) -> None:
             try:
                 entity = await client.get_input_entity(user)
                 peer = get_peer_id(entity)
-                strings.append(
-                    f"🆔 [{user}](tg://user?id={peer}): `{peer}`"
-                )
+                if isinstance(entity, types.InputPeerChat):
+                    chat = await client(
+                        functions.messages.GetFullChatRequest(entity)
+                    )
+                    strings.append(
+                        f"🆔 [{chat.chats[0].title}](tg://resolve?domain={peer}): `{peer}`"
+                    )
+                elif isinstance(entity, types.InputPeerChannel):
+                    channel = await client(
+                        functions.channels.GetFullChannelRequest(entity)
+                    )
+                    strings.append(
+                        f"🆔 [{channel.chats[0].title}](tg://resolve?domain={peer}): `{peer}`"
+                    )
+                else:
+                    user = await client(
+                        functions.users.GetFullUserRequest(entity)
+                    )
+                    strings.append(
+                        f"🆔 [@{user.user.username}](tg://user?id={peer}): `{peer}`"
+                    )
             except Exception as e:
                 failed.append(user)
                 LOGGER.debug(e)
         if strings:
-            text = ",\n".join(strings)
+            text = "\n".join(strings)
         if failed:
-            ftext = "**Utente non trovati:**\n"
+            ftext = "**Utenti non trovati:**\n"
             ftext += ", ".join(f'`{f}`' for f in failed)
             await event.answer(ftext, reply=True)
     if text:
