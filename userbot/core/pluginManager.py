@@ -193,7 +193,6 @@ class PluginManager:
 
     def _list_plugins(self) -> List[Union[Tuple[str, str], None]]:
         """Get all the files from the local plugins dir."""
-        LOGGER.info("Fetching all the local plugins.")
         plugins: List[Tuple[str, str]] = []
         if self.config.getboolean("enabled", True):
             for f in pathlib.Path(self.plugin_path).glob("**/*.py"):
@@ -209,7 +208,6 @@ class PluginManager:
 
     def _resolve_repo(self) -> Tuple[Dict[str, str], Dict[str, str]]:
         """Fetch all the files from a repository recusrively."""
-        LOGGER.info("Fetching all the external plugins from git repos")
         plugins: Dict[str, str] = {}
         helpers: Dict[str, str] = {}
         repos: List[str] = []
@@ -332,7 +330,7 @@ class PluginManager:
         callbacks: List[Callback] = []
         ppath = self.plugin_path.absolute() / name.replace('.', '/') / '.py'
         ubotpath = "userbot.plugins." + name
-        log = "Successfully imported {}".format(name)
+        log = "Plugin {} importato correttamente".format(name)
 
         for plugin in self.active_plugins:
             if plugin.name == name:
@@ -377,7 +375,6 @@ class PluginManager:
         ubotpath = "userbot." + name
         ppath = root / (ubotpath.replace('.', '/') + '.py')
         match = github_raw_pattern.search(path).group(1)
-        log = "Successfully imported helper {} from {}".format(name, match)
         if ppath.exists():
             LOGGER.info(
                 "Cannot overwrite %s helper from %s", ubotpath, match
