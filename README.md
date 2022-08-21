@@ -6,7 +6,7 @@ Fully async userbot built using the basics of [TG-Userbot][tguserbot] based on [
 
 ## Requirements:
 
-* Python 3.7.3 or above.
+* Python 3.9 or above.
 * Optional Telegram [API Key][tg-apps] (App ID and App Hash).
 
 ## How to install:
